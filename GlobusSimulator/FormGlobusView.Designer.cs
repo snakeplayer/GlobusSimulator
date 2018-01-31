@@ -1,6 +1,6 @@
 ﻿namespace GlobusSimulator
 {
-    partial class Form1
+    partial class FormGlobusView
     {
         /// <summary>
         /// Variable nécessaire au concepteur.

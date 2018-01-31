@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace GlobusSimulator
 {
-    public partial class Form1 : Form
+    public partial class FormGlobusView : Form
     {
-        public Form1()
+        public FormGlobusView()
         {
             InitializeComponent();
         }
