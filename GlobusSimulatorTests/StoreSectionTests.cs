@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GlobusSimulator;
-using Moq;
 using FluentAssertions;
 using System.Drawing;
 

@@ -7,7 +7,6 @@
  * Class : Path.cs
  * Class desc. : Reprensents a path
  */
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 
