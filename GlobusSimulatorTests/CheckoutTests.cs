@@ -23,9 +23,10 @@ namespace GlobusSimulator.Tests
             Point location = new Point(15, 25);
             Size size = new Size(45, 50);
             Rectangle shape = new Rectangle(location, size);
-            Checkout target = new Checkout(shape, Color.Red);
+            Checkout target = new Checkout(shape, Color.Red, 10);
             target.Shape.Should().Be(shape);
             target.Color.Should().Be(Color.Red);
+            target.MaxNumberOfHumans.Should().Be(10);
         }
 
         [TestMethod()]
@@ -67,42 +68,50 @@ namespace GlobusSimulator.Tests
         [TestMethod()]
         public void AddHumanTest()
         {
-            Mock<Human> human = new Mock<Human>();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Mock<Human> human = new Mock<Human>(mockShop.Object);
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
-            target.NbOfHumans.Should().Be(1);
+            target.NumberOfHumans.Should().Be(1);
         }
 
         [TestMethod()]
         public void CashOutTest()
         {
-            Mock<Human> human = new Mock<Human>();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Mock<Human> human = new Mock<Human>(mockShop.Object);
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.CashOut().Should().Be(human.Object);
-            target.NbOfHumans.Should().Be(0);
+            target.NumberOfHumans.Should().Be(0);
         }
 
         [TestMethod()]
         public void CashOutTest1()
         {
-            Mock<Human> human = new Mock<Human>();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Mock<Human> human = new Mock<Human>(mockShop.Object);
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.CashOut().Should().Be(human.Object);
-            target.NbOfHumans.Should().Be(0);
+            target.NumberOfHumans.Should().Be(0);
         }
 
         [TestMethod()]
         public void CashOutTest2()
         {
-            Mock<Human> human = new Mock<Human>();
-            Mock<Human> human1 = new Mock<Human>();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Mock<Human> human = new Mock<Human>(mockShop.Object);
+            Mock<Human> human1 = new Mock<Human>(mockShop.Object);
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.AddHuman(human1.Object);
             target.CashOut().Should().Be(human.Object);
-            target.NbOfHumans.Should().Be(1);
+            target.NumberOfHumans.Should().Be(1);
         }
     }
 }

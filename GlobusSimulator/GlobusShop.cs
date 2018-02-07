@@ -8,6 +8,7 @@
  * Class desc. : Reprensents a Globus shop
  */
 
+using System.Collections.Generic;
 
 namespace GlobusSimulator
 {
@@ -24,19 +25,48 @@ namespace GlobusSimulator
         #region Properties
 
         public List<Human> Humans { get; private set; }
+        public List<StoreSection> StoreSections { get; private set; }
+        public List<Checkout> Checkouts { get; private set; }
+
+        public Path Path { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public GlobusShop()
+        public GlobusShop(Path path)
         {
             this.Humans = new List<Human>();
+            this.StoreSections = new List<StoreSection>();
+            this.Checkouts = new List<Checkout>();
+
+            this.Path = path;
         }
 
         #endregion
 
         #region Methods
+
+        public void PlaceHumanFromPathToCheckout(Human human)
+        {
+            if (this.Humans.Contains(human))
+            {
+                this.Humans.Remove(human);
+                bool isAllCheckoutsFull = true;
+                foreach (Checkout c in this.Checkouts)
+                {
+                    if (c.NumberOfHumans < c.MaxNumberOfHumans)
+                    {
+                        c.AddHuman(human);
+                        isAllCheckoutsFull = false;
+                    }
+                }
+                if (isAllCheckoutsFull)
+                {
+                    // open a new Checkout
+                }
+            }
+        }
 
         #endregion
     }

@@ -55,21 +55,23 @@ namespace GlobusSimulator
             }
         }
 
+        public GlobusShop GlobusShop { get; set; }
+
         #endregion
 
         #region Constructors
 
-        public Human() : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y, Color.FromArgb(0, 255, 255, 255), DEFAULT_TIME_TO_STAY_MS) { }
+        public Human(GlobusShop pGlobusShop) : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y, Color.FromArgb(0, 255, 255, 255), DEFAULT_TIME_TO_STAY_MS, pGlobusShop) { }
 
-        public Human(int pPositionX, int pPositionY, Color pColor, int pTimeToStayInMilliseconds) : this(new Point(pPositionX, pPositionY), pColor, pTimeToStayInMilliseconds) { }
+        public Human(int pPositionX, int pPositionY, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) : this(new Point(pPositionX, pPositionY), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
 
         // Will be the most used in the project
-        public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds) { }
+        public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
 
-        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds) 
-            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds) { }
+        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) 
+            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
 
-        public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds)
+        public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop)
         {
             Point p = pPoint;
             Size s = pSize;
@@ -83,6 +85,8 @@ namespace GlobusSimulator
             this.Timer.Elapsed += TimeInShop_Elapsed;
 
             this.NumberOfItems = 0;
+
+            this.GlobusShop = pGlobusShop;
         }
 
         #endregion

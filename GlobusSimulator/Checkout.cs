@@ -18,6 +18,7 @@ namespace GlobusSimulator
         private const int DEFAULT_WIDTH = 25;
         private const int DEFAULT_HEIGHT = 10;
         private static readonly Color DEFAULT_COLOR = Color.Blue;
+        private const int DEFAULT_MAX_NUMBER_OF_HUMANS = 5;
         #endregion
 
         #region Fields
@@ -27,19 +28,21 @@ namespace GlobusSimulator
         #region Properties
         public Rectangle Shape { get; private set; }
         private Queue<Human> QueueLine { get => _queuLine; set => _queuLine = value ?? new Queue<Human>(); }
-        public int NbOfHumans { get => this.QueueLine.Count; }
+        public int NumberOfHumans { get => this.QueueLine.Count; }
+        public int MaxNumberOfHumans { get; private set; }
         public Color Color { get; private set; }
         #endregion
 
         #region Constructors
-        public Checkout(Rectangle shape, Color color)
+        public Checkout(Rectangle shape, Color color, int maxNumberOfHumans)
         {
             this.Shape = shape;
-            this.QueueLine = new Queue<Human>();
+            this.MaxNumberOfHumans = maxNumberOfHumans;
+            this.QueueLine = new Queue<Human>(this.MaxNumberOfHumans);
             this.Color = color;
         }
 
-        public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR)
+        public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR, Checkout.DEFAULT_MAX_NUMBER_OF_HUMANS)
         {
             // no code
         }

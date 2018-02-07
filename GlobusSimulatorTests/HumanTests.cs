@@ -10,6 +10,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GlobusSimulator;
 using FluentAssertions;
+using Moq;
 
 namespace GlobusSimulatorTests
 {
@@ -19,7 +20,9 @@ namespace GlobusSimulatorTests
         [TestMethod()]
         public void HumanCtorTest1()
         {
-            Human target = new Human();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Human target = new Human(mockShop.Object);
 
             target.Should().NotBeNull();
             target.Shape.Should().NotBeNull();
@@ -32,7 +35,9 @@ namespace GlobusSimulatorTests
         [TestMethod()]
         public void HumanAddItemTest1()
         {
-            Human target = new Human();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Human target = new Human(mockShop.Object);
 
             target.AddItem();
 
@@ -42,7 +47,9 @@ namespace GlobusSimulatorTests
         [TestMethod()]
         public void HumanRemoveItemTest1()
         {
-            Human target = new Human();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Human target = new Human(mockShop.Object);
 
             bool wasRemoved = target.RemoveItem();
 
@@ -53,7 +60,9 @@ namespace GlobusSimulatorTests
         [TestMethod()]
         public void HumanRemoveItemTest2()
         {
-            Human target = new Human();
+            Mock<Path> mockPath = new Mock<Path>();
+            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
+            Human target = new Human(mockShop.Object);
 
             target.AddItem();
             bool wasRemoved = target.RemoveItem();
