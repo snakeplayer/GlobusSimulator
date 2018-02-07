@@ -1,4 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*
+ * Authors : Baptiste COUDRAY, Benoit CHAUCHE
+ * Enterprise : CFPTI, T.IS-E2
+ * Date : 07.02.2018
+ * Project : GlobusSimulator
+ * Project desc. : A simulated Globus shop
+ * Class : CheckoutTests.cs
+ * Class desc. : Represents a checkout - UNIT TESTS CLASS
+ */
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using FluentAssertions;
 using System.Drawing;
@@ -14,8 +23,9 @@ namespace GlobusSimulator.Tests
             Point location = new Point(15, 25);
             Size size = new Size(45, 50);
             Rectangle shape = new Rectangle(location, size);
-            Checkout target = new Checkout(shape);
+            Checkout target = new Checkout(shape, Color.Red);
             target.Shape.Should().Be(shape);
+            target.Color.Should().Be(Color.Red);
         }
 
         [TestMethod()]

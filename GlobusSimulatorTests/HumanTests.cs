@@ -5,17 +5,10 @@
  * Project : GlobusSimulator
  * Project desc. : A simulated Globus shop
  * Class : HumanTests.cs
- * Class desc. : Reprensents a human being - UNIT TESTS CLASS
+ * Class desc. : Represents a human being - UNIT TESTS CLASS
  */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GlobusSimulator;
-using System.Drawing;
 using FluentAssertions;
 
 namespace GlobusSimulatorTests

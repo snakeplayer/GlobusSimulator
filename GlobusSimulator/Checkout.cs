@@ -7,12 +7,8 @@
  * Class : Checkout.cs
  * Class desc. : Reprensents a checkout
  */
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobusSimulator
 {
@@ -21,6 +17,7 @@ namespace GlobusSimulator
         #region Consts
         private const int DEFAULT_WIDTH = 25;
         private const int DEFAULT_HEIGHT = 10;
+        private static readonly Color DEFAULT_COLOR = Color.Blue;
         #endregion
 
         #region Fields
@@ -31,16 +28,18 @@ namespace GlobusSimulator
         public Rectangle Shape { get; private set; }
         private Queue<Human> QueueLine { get => _queuLine; set => _queuLine = value ?? new Queue<Human>(); }
         public int NbOfHumans { get => this.QueueLine.Count; }
+        public Color Color { get; private set; }
         #endregion
 
         #region Constructors
-        public Checkout(Rectangle shape)
+        public Checkout(Rectangle shape, Color color)
         {
             this.Shape = shape;
             this.QueueLine = new Queue<Human>();
+            this.Color = color;
         }
 
-        public Checkout(Point location, Size size) : this(new Rectangle(location, size))
+        public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR)
         {
             // no code
         }
