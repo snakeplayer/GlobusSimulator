@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace GlobusSimulator
 {
@@ -24,6 +25,8 @@ namespace GlobusSimulator
         private const int DEFAULT_HEIGHT = 10;
         private const int DEFAULT_POSITION_X = 0;
         private const int DEFAULT_POSITION_Y = 0;
+        private const int DEFAULT_TIME_TO_STAY_MS = 20000;
+        private const int DEFAULT_DIVIDE_TIME = 500;
 
         #endregion
 
@@ -36,6 +39,17 @@ namespace GlobusSimulator
         #region Properties
 
         public Rectangle Shape { get; set; }
+        public Color Color { get; set; }
+
+        public int TimeToStayInMilliseconds { get; set; }
+        public Timer Timer { get; set; }
+
+        public int NumberOfItemsToBuy {
+            get {
+                return TimeToStayInMilliseconds / DEFAULT_DIVIDE_TIME;
+            }
+        }
+
         public int NumberOfItems {
             get {
                 return _numberOfItems;
@@ -49,26 +63,45 @@ namespace GlobusSimulator
 
         #region Constructors
 
-        public Human() : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y) { }
+        public Human() : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y, Color.FromArgb(0, 255, 255, 255), DEFAULT_TIME_TO_STAY_MS) { }
 
-        public Human(int pPositionX, int pPositionY) : this(new Point(pPositionX, pPositionY)) { }
+        public Human(int pPositionX, int pPositionY, Color pColor, int pTimeToStayInMilliseconds) : this(new Point(pPositionX, pPositionY), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(Point pPoint) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT)) { }
+        // Will be the most used in the project
+        public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight) 
-            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight)) { }
+        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds) 
+            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(Point pPoint, Size pSize)
+        public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds)
         {
             Point p = pPoint;
             Size s = pSize;
 
             this.Shape = new Rectangle(p, s);
+            this.Color = pColor;
+
+            this.TimeToStayInMilliseconds = pTimeToStayInMilliseconds;
+
+            this.Timer = new Timer(this.TimeToStayInMilliseconds);
+            this.Timer.Elapsed += TimeInShop_Elapsed;
+
             this.NumberOfItems = 0;
         }
+
         #endregion
 
         #region Methods
+
+        private void TimeInShop_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            // TODO
+        }
+
+        public void StartTimer()
+        {
+            this.Timer.Start();
+        }
 
         public void AddItem()
         {
