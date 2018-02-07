@@ -7,7 +7,6 @@
  * Class : Human.cs
  * Class desc. : Reprensents a human being
  */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,12 +30,10 @@ namespace GlobusSimulator
         #endregion
 
         #region Constructors
-
         public Human()
         {
 
         }
-
         #endregion
 
         #region Methods
