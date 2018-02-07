@@ -28,9 +28,16 @@ namespace GlobusSimulator
 
         #region Properties
 
+        public List<Human> Humans { get; private set; }
+
         #endregion
 
         #region Constructors
+
+        public GlobusShop()
+        {
+            this.Humans = new List<Human>();
+        }
 
         #endregion
 
