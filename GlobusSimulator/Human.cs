@@ -5,7 +5,7 @@
  * Project : GlobusSimulator
  * Project desc. : A simulated Globus shop
  * Class : Human.cs
- * Class desc. : Reprensents a human being
+ * Class desc. : Represents a human being
  */
 using System;
 using System.Collections.Generic;
