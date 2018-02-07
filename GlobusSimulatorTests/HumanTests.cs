@@ -29,6 +29,9 @@ namespace GlobusSimulatorTests
 
             target.Should().NotBeNull();
             target.Shape.Should().NotBeNull();
+            target.Color.Should().NotBeNull();
+            target.TimeToStayInMilliseconds.Should().Be(20000);
+            target.NumberOfItemsToBuy.Should().Be(40);
             target.NumberOfItems.Should().Be(0);
         }
 

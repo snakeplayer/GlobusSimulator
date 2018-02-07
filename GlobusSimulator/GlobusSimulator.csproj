@@ -52,6 +52,7 @@
     <Compile Include="FormGlobusView.Designer.cs">
       <DependentUpon>FormGlobusView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobusShop.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Program.cs" />
