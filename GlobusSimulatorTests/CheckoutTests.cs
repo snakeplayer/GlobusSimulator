@@ -14,8 +14,9 @@ namespace GlobusSimulator.Tests
             Point location = new Point(15, 25);
             Size size = new Size(45, 50);
             Rectangle shape = new Rectangle(location, size);
-            Checkout target = new Checkout(shape);
+            Checkout target = new Checkout(shape, Color.Red);
             target.Shape.Should().Be(shape);
+            target.Color.Should().Be(Color.Red);
         }
 
         [TestMethod()]
