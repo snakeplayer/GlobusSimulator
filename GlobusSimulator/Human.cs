@@ -48,9 +48,6 @@ namespace GlobusSimulator
         #endregion
 
         #region Constructors
-<<<<<<< HEAD
-        public Human()
-=======
 
         public Human() : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y) { }
 
@@ -62,7 +59,6 @@ namespace GlobusSimulator
             : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight)) { }
 
         public Human(Point pPoint, Size pSize)
->>>>>>> 16ab7781fcfca2ffc0a0c370dcdec28e0907f38b
         {
             Point p = pPoint;
             Size s = pSize;
