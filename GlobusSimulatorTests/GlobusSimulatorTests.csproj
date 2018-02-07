@@ -81,6 +81,7 @@
     <Compile Include="CheckoutTests.cs" />
     <Compile Include="HumanTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreSectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
