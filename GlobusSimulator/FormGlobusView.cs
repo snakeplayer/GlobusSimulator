@@ -146,5 +146,11 @@ namespace GlobusSimulator
 
             this.UpdateView();
         }
+
+        private void button4_Click(object sender, System.EventArgs e)
+        {
+            FormGlobusEditor frm = new FormGlobusEditor();
+            frm.Show();
+        }
     }
 }

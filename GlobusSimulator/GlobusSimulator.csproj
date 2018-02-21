@@ -64,6 +64,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoreSection.cs" />
+    <EmbeddedResource Include="FormGlobusEditor.resx">
+      <DependentUpon>FormGlobusEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormGlobusView.resx">
       <DependentUpon>FormGlobusView.cs</DependentUpon>
     </EmbeddedResource>
