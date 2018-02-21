@@ -15,23 +15,35 @@ namespace GlobusSimulator
     public class Path
     {
         #region Consts
+
         #endregion
+
         #region Fields
+
         #endregion
+
         #region Properties
+
         public List<Point> Points { get; private set; }
+
         #endregion
+
         #region Constructors
+
         public Path() : this(new List<Point>())
         {
             // no code
         }
+
         public Path(List<Point> points)
         {
             this.Points = points;
         }
+
         #endregion
+
         #region Methods
+
         public void AddPoint(Point point)
         {
             this.Points.Add(point);
@@ -51,6 +63,7 @@ namespace GlobusSimulator
         {
             points.ForEach(p => this.Points.Remove(p));
         }
+
         #endregion
     }
 }

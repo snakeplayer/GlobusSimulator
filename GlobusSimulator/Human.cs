@@ -17,8 +17,8 @@ namespace GlobusSimulator
     {
         #region Consts
 
-        private const int DEFAULT_WIDTH = 10;
-        private const int DEFAULT_HEIGHT = 10;
+        private const int DEFAULT_WIDTH = 15;
+        private const int DEFAULT_HEIGHT = 15;
         private const int DEFAULT_POSITION_X = 0;
         private const int DEFAULT_POSITION_Y = 0;
         private const int DEFAULT_TIME_TO_STAY_MS = 20000;
