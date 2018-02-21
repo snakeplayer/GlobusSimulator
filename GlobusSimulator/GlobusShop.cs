@@ -9,11 +9,16 @@
  */
 
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace GlobusSimulator
 {
     public class GlobusShop
     {
+        private List<Human> _humans;
+        private List<StoreSection> _storeSections;
+        private List<Checkout> _checkouts;
+        private Path _path;
         #region Consts
 
         #endregion
@@ -23,30 +28,23 @@ namespace GlobusSimulator
         #endregion
 
         #region Properties
-
-        public List<Human> Humans { get; private set; }
-        public List<StoreSection> StoreSections { get; private set; }
-        public List<Checkout> Checkouts { get; private set; }
-
-        public Path Path { get; private set; }
-
+        public List<Human> Humans { get => _humans; private set => _humans = value ?? new List<Human>(); }
+        public List<StoreSection> StoreSections { get => _storeSections; private set => _storeSections = value ?? new List<StoreSection>(); }
+        public List<Checkout> Checkouts { get => _checkouts; private set => _checkouts = value ?? new List<Checkout>(); }
+        public Path Path { get => _path; private set => _path = value ?? new Path(); }
         #endregion
 
         #region Constructors
-
         public GlobusShop(Path path)
         {
             this.Humans = new List<Human>();
             this.StoreSections = new List<StoreSection>();
             this.Checkouts = new List<Checkout>();
-
             this.Path = path;
         }
-
         #endregion
 
         #region Methods
-
         public void PlaceHumanFromPathToCheckout(Human human)
         {
             if (this.Humans.Contains(human))
@@ -63,11 +61,50 @@ namespace GlobusSimulator
                 }
                 if (isAllCheckoutsFull)
                 {
-                    // open a new Checkout
+                    //
                 }
             }
         }
 
+        public void AddHuman(Point point, Color color, int timeToStayInMilliseconds)
+        {
+            this.Humans.Add(new Human(point, color, timeToStayInMilliseconds));
+        }
+
+        public void AddStoreSection(StoreSection storeSection)
+        {
+            this.StoreSections.Add(storeSection);
+        }
+
+        public void AddStoreSection(Point location)
+        {
+            this.AddStoreSection(new StoreSection(location));
+        }
+
+        public void RemoveStoreSection(StoreSection storeSection)
+        {
+            this.StoreSections.Remove(storeSection);
+        }
+        
+        public void RemoveStoreSections(List<StoreSection> storeSections)
+        {
+            storeSections.ForEach(ss => this.StoreSections.Remove(ss));
+        }
+
+        public void RemoveAllStoreSections()
+        {
+            this.StoreSections.Clear();
+        }
+
+        public void AddPointToPath(Point point)
+        {
+            this.Path.AddPoint(point);
+        }
+
+        public void ResetPath()
+        {
+            this.Path.RemoveAllPoints();
+        }
         #endregion
     }
 }

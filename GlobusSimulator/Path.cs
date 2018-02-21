@@ -19,12 +19,12 @@ namespace GlobusSimulator
         #endregion
 
         #region Fields
-
+        private List<Point> _points;
         #endregion
 
         #region Properties
 
-        public List<Point> Points { get; private set; }
+        public List<Point> Points { get => _points; private set => _points = value ?? new List<Point>(); }
 
         #endregion
 
@@ -64,6 +64,10 @@ namespace GlobusSimulator
             points.ForEach(p => this.Points.Remove(p));
         }
 
+        public void RemoveAllPoints()
+        {
+            this.Points.Clear();
+        }
         #endregion
     }
 }

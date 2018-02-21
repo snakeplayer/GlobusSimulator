@@ -54,29 +54,23 @@ namespace GlobusSimulator
                 _numberOfItems = value < 0 ? 0 : value;
             }
         }
-
-        public GlobusShop GlobusShop { get; set; }
-
         #endregion
 
         #region Constructors
 
-        public Human(GlobusShop pGlobusShop) : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y, Color.FromArgb(0, 255, 255, 255), DEFAULT_TIME_TO_STAY_MS, pGlobusShop) { }
+        public Human() : this(DEFAULT_POSITION_X, DEFAULT_POSITION_Y, Color.FromArgb(0, 255, 255, 255), DEFAULT_TIME_TO_STAY_MS) { }
 
-        public Human(int pPositionX, int pPositionY, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) : this(new Point(pPositionX, pPositionY), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
+        public Human(int pPositionX, int pPositionY, Color pColor, int pTimeToStayInMilliseconds) : this(new Point(pPositionX, pPositionY), pColor, pTimeToStayInMilliseconds) { }
 
         // Will be the most used in the project
-        public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
+        public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop) 
-            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds, pGlobusShop) { }
+        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds) 
+            : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds, GlobusShop pGlobusShop)
+        public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds)
         {
-            Point p = pPoint;
-            Size s = pSize;
-
-            this.Shape = new Rectangle(p, s);
+            this.Shape = new Rectangle(pPoint, pSize);
             this.Color = pColor;
 
             this.TimeToStayInMilliseconds = pTimeToStayInMilliseconds;
@@ -85,8 +79,6 @@ namespace GlobusSimulator
             this.Timer.Elapsed += TimeInShop_Elapsed;
 
             this.NumberOfItems = 0;
-
-            this.GlobusShop = pGlobusShop;
         }
 
         #endregion
@@ -111,13 +103,11 @@ namespace GlobusSimulator
         public bool RemoveItem()
         {
             bool wasRemoved = false;
-
             if (this.NumberOfItems > 0)
             {
                 this.NumberOfItems--;
                 wasRemoved = true;
             }
-
             return wasRemoved;
         }
 

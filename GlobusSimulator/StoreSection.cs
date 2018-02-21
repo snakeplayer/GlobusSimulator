@@ -44,12 +44,12 @@ namespace GlobusSimulator
             // no code
         }
 
-        public StoreSection(Size size) : this(StoreSection.DEFAULT_WIDTH, StoreSection.DEFAULT_HEIGHT, size.Width, size.Height)
+        public StoreSection(int x, int y) : this(x,y,StoreSection.DEFAULT_WIDTH, StoreSection.DEFAULT_HEIGHT)
         {
             // no code
         }
 
-        public StoreSection(int width, int height) : this(new Size(width, height))
+        public StoreSection(Point location) : this(location.X, location.Y)
         {
             // no code
         }
