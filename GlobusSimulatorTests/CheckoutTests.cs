@@ -69,8 +69,7 @@ namespace GlobusSimulator.Tests
         public void AddHumanTest()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Mock<Human> human = new Mock<Human>(mockShop.Object);
+            Mock<Human> human = new Mock<Human>();
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.NumberOfHumans.Should().Be(1);
@@ -80,8 +79,7 @@ namespace GlobusSimulator.Tests
         public void CashOutTest()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Mock<Human> human = new Mock<Human>(mockShop.Object);
+            Mock<Human> human = new Mock<Human>();
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.CashOut().Should().Be(human.Object);
@@ -92,8 +90,7 @@ namespace GlobusSimulator.Tests
         public void CashOutTest1()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Mock<Human> human = new Mock<Human>(mockShop.Object);
+            Mock<Human> human = new Mock<Human>();
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.CashOut().Should().Be(human.Object);
@@ -105,8 +102,8 @@ namespace GlobusSimulator.Tests
         {
             Mock<Path> mockPath = new Mock<Path>();
             Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Mock<Human> human = new Mock<Human>(mockShop.Object);
-            Mock<Human> human1 = new Mock<Human>(mockShop.Object);
+            Mock<Human> human = new Mock<Human>();
+            Mock<Human> human1 = new Mock<Human>();
             Checkout target = new Checkout(new Size(15, 25));
             target.AddHuman(human.Object);
             target.AddHuman(human1.Object);

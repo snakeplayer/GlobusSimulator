@@ -21,8 +21,7 @@ namespace GlobusSimulatorTests
         public void HumanCtorTest1()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Human target = new Human(mockShop.Object);
+            Human target = new Human();
 
             target.Should().NotBeNull();
             target.Shape.Should().NotBeNull();
@@ -36,8 +35,7 @@ namespace GlobusSimulatorTests
         public void HumanAddItemTest1()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Human target = new Human(mockShop.Object);
+            Human target = new Human();
 
             target.AddItem();
 
@@ -48,8 +46,7 @@ namespace GlobusSimulatorTests
         public void HumanRemoveItemTest1()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Human target = new Human(mockShop.Object);
+            Human target = new Human();
 
             bool wasRemoved = target.RemoveItem();
 
@@ -61,8 +58,7 @@ namespace GlobusSimulatorTests
         public void HumanRemoveItemTest2()
         {
             Mock<Path> mockPath = new Mock<Path>();
-            Mock<GlobusShop> mockShop = new Mock<GlobusShop>(mockPath.Object);
-            Human target = new Human(mockShop.Object);
+            Human target = new Human();
 
             target.AddItem();
             bool wasRemoved = target.RemoveItem();

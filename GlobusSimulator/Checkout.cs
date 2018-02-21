@@ -31,6 +31,7 @@ namespace GlobusSimulator
         public int NumberOfHumans { get => this.QueueLine.Count; }
         public int MaxNumberOfHumans { get; private set; }
         public Color Color { get; private set; }
+        public bool IsVisible { get; set; }
         #endregion
 
         #region Constructors
@@ -40,6 +41,7 @@ namespace GlobusSimulator
             this.MaxNumberOfHumans = maxNumberOfHumans;
             this.QueueLine = new Queue<Human>(this.MaxNumberOfHumans);
             this.Color = color;
+            this.IsVisible = false;
         }
 
         public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR, Checkout.DEFAULT_MAX_NUMBER_OF_HUMANS)
@@ -72,6 +74,16 @@ namespace GlobusSimulator
         public Human CashOut()
         {
             return this.QueueLine.Dequeue();
+        }
+
+        public void Hide()
+        {
+            this.IsVisible = false;
+        }
+
+        public void Show()
+        {
+            this.IsVisible = true;
         }
         #endregion
     }
