@@ -30,10 +30,10 @@ namespace GlobusSimulator
         #endregion
 
         #region Properties
-        public List<Human> Humans { get => _humans; private set => _humans = value ?? GlobusShop.DEFAULT_HUMANS; }
-        public List<StoreSection> StoreSections { get => _storeSections; private set => _storeSections = value ?? GlobusShop.DEFAULT_STORE_SECTIONS; }
-        public List<Checkout> Checkouts { get => _checkouts; private set => _checkouts = value ?? GlobusShop.DEFAULT_CHECKOUTS; }
-        public Path Path { get => _path; private set => _path = value ?? GlobusShop.DEFAULT_PATH; }
+        public List<Human> Humans { get => _humans; private set => _humans = value ?? new List<Human>(); }
+        public List<StoreSection> StoreSections { get => _storeSections; private set => _storeSections = value ?? new List<StoreSection>(); }
+        public List<Checkout> Checkouts { get => _checkouts; private set => _checkouts = value ?? new List<Checkout>(); }
+        public Path Path { get => _path; private set => _path = value ?? new Path(); }
         #endregion
 
         #region Constructors
@@ -45,22 +45,22 @@ namespace GlobusSimulator
             this.Humans = humans;
         }
 
-        public GlobusShop(Path path, List<StoreSection> storeSections, List<Checkout> checkouts) : this(path, storeSections, checkouts, GlobusShop.DEFAULT_HUMANS)
+        public GlobusShop(Path path, List<StoreSection> storeSections, List<Checkout> checkouts) : this(path, storeSections, checkouts, new List<Human>())
         {
             // no code
         }
 
-        public GlobusShop(Path path, List<StoreSection> storeSections) : this(path, storeSections, GlobusShop.DEFAULT_CHECKOUTS)
+        public GlobusShop(Path path, List<StoreSection> storeSections) : this(path, storeSections, new List<Checkout>())
         {
             // no code
         }
 
-        public GlobusShop(Path path) : this(path, GlobusShop.DEFAULT_STORE_SECTIONS)
+        public GlobusShop(Path path) : this(path, new List<StoreSection>())
         {
             // no code
         }
 
-        public GlobusShop() : this(GlobusShop.DEFAULT_PATH)
+        public GlobusShop() : this(new Path())
         {
             // no code
         }

@@ -146,7 +146,6 @@ namespace GlobusSimulator
             FormGlobusEditor editor = new FormGlobusEditor();
             if(editor.ShowDialog() == DialogResult.OK)
             {
-
             }
         }
     }
