@@ -82,6 +82,14 @@ namespace GlobusSimulator
         {
             this.Observer.Notify();
         }
+
+        private void AddHumans(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                this.Humans.Add(new Human());
+            }
+        }
         #endregion
     }
 }

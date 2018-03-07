@@ -60,7 +60,9 @@
       <DependentUpon>FormGlobusView.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobusShop.cs" />
+    <Compile Include="GlobusShopEditor.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="HumanType.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

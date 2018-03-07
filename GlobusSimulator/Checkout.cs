@@ -63,11 +63,6 @@ namespace GlobusSimulator
         {
             // no code
         }
-
-        public Checkout(Point location) : this(location.X, location.Y)
-        {
-            // no code
-        }
         #endregion
 
         #region Methods
