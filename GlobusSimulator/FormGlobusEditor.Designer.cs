@@ -120,6 +120,7 @@
             this.pnlDrawingZone.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlDrawingZone_Paint);
             this.pnlDrawingZone.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseClick);
             this.pnlDrawingZone.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseDown);
+            this.pnlDrawingZone.MouseLeave += new System.EventHandler(this.pnlDrawingZone_MouseLeave);
             this.pnlDrawingZone.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseMove);
             // 
             // FormGlobusEditor

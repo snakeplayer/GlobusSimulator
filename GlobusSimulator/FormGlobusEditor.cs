@@ -16,17 +16,22 @@ namespace GlobusSimulator
 {
     public partial class FormGlobusEditor : Form
     {
-        #region Consts
-
-        #endregion
-
         #region Fields
-        private GlobusShop _globusShop;
+
+        private GlobusShopEditor _globusShopEditor;
+
         #endregion
 
         #region Properties
-        private GlobusShop GlobusShop { get => _globusShop; set => _globusShop = value ?? new GlobusShop(); }
+
+        public GlobusShopEditor GlobusShopEditor { get => _globusShopEditor; private set => _globusShopEditor = value ?? new GlobusShopEditor(); }
+
+        private bool IsDrawingObject { get; set; }
+        private Point ObjectStartPoint { get; set; }
         private bool IsDrawingPath { get; set; }
+
+        public Point MouseLocation { get; set; }
+
         #endregion
 
         #region Constructors
@@ -36,7 +41,7 @@ namespace GlobusSimulator
             InitializeComponent();
             typeof(Panel).InvokeMember(nameof(DoubleBuffered), BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, pnlDrawingZone, new object[] { true });
             this.cbxObjectToDraw.DataSource = Enum.GetValues(typeof(DrawableObject));
-            this.GlobusShop = new GlobusShop();
+            this.GlobusShopEditor = new GlobusShopEditor();
         }
 
         #endregion
@@ -55,41 +60,119 @@ namespace GlobusSimulator
         {
             switch ((DrawableObject)cbxObjectToDraw.SelectedItem)
             {
-                case DrawableObject.Path:
-                    this.IsDrawingPath = !this.IsDrawingPath && e.Button == MouseButtons.Right;
-                    this.GlobusShop.AddPointToPath(e.Location);
-                    break;
+                // StoreSection
                 case DrawableObject.StoreSection:
-                    this.GlobusShop.AddStoreSection(e.Location);
+                    this.CreateObject(DrawableObject.StoreSection, e);
                     break;
+
+                // Checkout
                 case DrawableObject.Checkout:
-                   // this.GlobusShop.AddCheckout(new Checkout());
+                    this.CreateObject(DrawableObject.Checkout, e);
+                    break;
+
+                // Path
+                case DrawableObject.Path:
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        this.IsDrawingPath = !this.IsDrawingPath;
+                        if (this.IsDrawingPath)
+                        {
+                            this.GlobusShopEditor.ResetPath();
+                        }
+                        else
+                        {
+                            this.GlobusShopEditor.AddPointToPath(e.Location);
+                        }
+                    }
+                    else
+                    {
+                        this.GlobusShopEditor.ResetPath();
+                    }
                     break;
             }
+
+            this.UpdateView();
         }
 
         private void PnlDrawingZone_MouseMove(object sender, MouseEventArgs e)
         {
+            this.MouseLocation = e.Location;
+
             if (this.IsDrawingPath)
             {
-                this.GlobusShop.AddPointToPath(e.Location);
-                this.UpdateView();
+                this.GlobusShopEditor.AddPointToPath(this.MouseLocation);
             }
+
+            this.UpdateView();
         }
 
         private void PnlDrawingZone_Paint(object sender, PaintEventArgs e)
         {
             SolidBrush myBrush;
 
-            this.GlobusShop.Humans.ForEach(h => { myBrush = new SolidBrush(h.Color); e.Graphics.FillEllipse(myBrush, h.Shape); });
-            this.GlobusShop.Path.Points.ForEach(p => { myBrush = new SolidBrush(Color.Red); e.Graphics.FillEllipse(myBrush, new Rectangle(p, new Size(10, 10))); });
-            this.GlobusShop.StoreSections.ForEach(s => { myBrush = new SolidBrush(s.Color); e.Graphics.FillRectangle(myBrush, s.Shape); });
-            this.GlobusShop.Checkouts.ForEach(c => { myBrush = new SolidBrush(c.Color); e.Graphics.FillRectangle(myBrush, c.Shape); });
+            this.GlobusShopEditor.Path.Points.ForEach(p => { myBrush = new SolidBrush(Color.Red); e.Graphics.FillEllipse(myBrush, new Rectangle(p, new Size(10, 10))); });
+            this.GlobusShopEditor.StoreSections.ForEach(s => { myBrush = new SolidBrush(s.Color); e.Graphics.FillRectangle(myBrush, s.Shape); });
+            this.GlobusShopEditor.Checkouts.ForEach(c => { myBrush = new SolidBrush(c.Color); e.Graphics.FillRectangle(myBrush, c.Shape); });
+
+            // StoreSection & Checkout
+            if (this.IsDrawingObject)
+            {
+                Size size = new Size(this.MouseLocation.X - this.ObjectStartPoint.X, this.MouseLocation.Y - this.ObjectStartPoint.Y);
+                e.Graphics.DrawRectangle(Pens.Black, new Rectangle(this.ObjectStartPoint, size));
+            }
         }
 
         private void PnlDrawingZone_MouseDown(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void pnlDrawingZone_MouseLeave(object sender, EventArgs e)
+        {
+            this.IsDrawingObject = false;
+        }
+
+        private void CreateObject(DrawableObject drawableObject, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.IsDrawingObject = !this.IsDrawingObject;
+                if (this.IsDrawingObject)
+                {
+                    this.ObjectStartPoint = this.MouseLocation;
+                }
+                else
+                {
+                    Size size = new Size(this.MouseLocation.X - this.ObjectStartPoint.X, this.MouseLocation.Y - this.ObjectStartPoint.Y);
+
+                    switch (drawableObject)
+                    {
+                        case DrawableObject.StoreSection:
+                            this.GlobusShopEditor.AddStoreSection(this.ObjectStartPoint, size);
+                            break;
+                        case DrawableObject.Checkout:
+                            this.GlobusShopEditor.AddCheckout(this.ObjectStartPoint, size);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                switch (drawableObject)
+                {
+                    case DrawableObject.StoreSection:
+                        this.GlobusShopEditor.RemoveStoreSection(this.MouseLocation);
+                        break;
+                    case DrawableObject.Checkout:
+                        this.GlobusShopEditor.RemoveCheckout(this.MouseLocation);
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
         }
     }
 }
