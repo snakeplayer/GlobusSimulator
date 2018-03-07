@@ -58,6 +58,11 @@ namespace GlobusSimulator
             this.AddStoreSection(new StoreSection(location));
         }
 
+        public void AddStoreSection(Point location, Size size)
+        {
+            this.AddStoreSection(new StoreSection(location, size));
+        }
+
         public void RemoveStoreSection(StoreSection storeSection)
         {
             this.StoreSections.Remove(storeSection);
@@ -103,6 +108,11 @@ namespace GlobusSimulator
         public void AddCheckout(Point location)
         {
             this.Checkouts.Add(new Checkout(location));
+        }
+
+        public void AddCheckout(Point location, Size size)
+        {
+            this.AddCheckout(new Checkout(location, size));
         }
 
         public void RemoveCheckout(Checkout checkout)

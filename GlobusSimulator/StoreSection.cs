@@ -16,7 +16,7 @@ namespace GlobusSimulator
         #region Consts
         private const int DEFAULT_WIDTH = 25;
         private const int DEFAULT_HEIGHT = 10;
-        private static readonly Color DEFAULT_COLOR = Color.Blue;
+        private static readonly Color DEFAULT_COLOR = Color.DarkGray;
         #endregion
 
         #region Fields

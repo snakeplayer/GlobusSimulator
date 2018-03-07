@@ -44,6 +44,11 @@ namespace GlobusSimulator
             this.IsVisible = false;
         }
 
+        public Checkout(Point location) : this(location, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT))
+        {
+
+        }
+
         public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR, Checkout.DEFAULT_MAX_NUMBER_OF_HUMANS)
         {
             // no code
