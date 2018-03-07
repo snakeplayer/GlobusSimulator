@@ -20,34 +20,27 @@ namespace GlobusSimulator
     public abstract class Shop : Object
     {
         #region Fields
-        
         private List<StoreSection> _storeSections;
         private List<Checkout> _checkouts;
         private Path _path;
-
         #endregion
 
         #region Properties
-        
         public List<StoreSection> StoreSections { get => _storeSections; private set => _storeSections = value ?? new List<StoreSection>(); }
         public List<Checkout> Checkouts { get => _checkouts; private set => _checkouts = value ?? new List<Checkout>(); }
         public Path Path { get => _path; private set => _path = value ?? new Path(); }
-
         #endregion
 
         #region Constructor
-
-        public Shop(List<StoreSection> storeSections, List<Checkout> checkouts, Path path)
+        protected Shop(List<StoreSection> storeSections, List<Checkout> checkouts, Path path)
         {
             this.StoreSections = storeSections;
             this.Checkouts = checkouts;
             this.Path = path;
         }
-
         #endregion
 
         #region Methods (StoreSection)
-
         public void AddStoreSection(StoreSection storeSection)
         {
             this.StoreSections.Add(storeSection);
@@ -90,11 +83,9 @@ namespace GlobusSimulator
         {
             this.StoreSections.Clear();
         }
-
         #endregion
 
         #region Methods (Checkout)
-
         public void AddCheckout(Checkout checkout)
         {
             this.Checkouts.Add(checkout);
@@ -127,11 +118,9 @@ namespace GlobusSimulator
                 this.Checkouts.RemoveAt(index);
             }
         }
-
         #endregion
 
         #region Methods (Path)
-
         public void AddPointToPath(Point point)
         {
             this.Path.AddPoint(point);
@@ -146,7 +135,6 @@ namespace GlobusSimulator
         {
             this.Path.RemoveAllPoints();
         }
-
         #endregion
     }
 }

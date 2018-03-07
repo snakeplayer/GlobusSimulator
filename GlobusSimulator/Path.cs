@@ -23,13 +23,11 @@ namespace GlobusSimulator
         #endregion
 
         #region Properties
-
         public List<Point> Points { get => _points; private set => _points = value ?? new List<Point>(); }
-
+        public int NumberOfPoints { get => this.Points.Count; }
         #endregion
 
         #region Constructors
-
         public Path() : this(new List<Point>())
         {
             // no code
@@ -37,13 +35,11 @@ namespace GlobusSimulator
 
         public Path(List<Point> points)
         {
-            this.Points = points;
+            this.Points = new List<Point>(points);
         }
-
         #endregion
 
         #region Methods
-
         public void AddPoint(Point point)
         {
             this.Points.Add(point);

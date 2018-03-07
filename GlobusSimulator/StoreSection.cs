@@ -44,7 +44,7 @@ namespace GlobusSimulator
             // no code
         }
 
-        public StoreSection(int x, int y) : this(x,y,StoreSection.DEFAULT_WIDTH, StoreSection.DEFAULT_HEIGHT)
+        public StoreSection(int x, int y) : this(x, y, StoreSection.DEFAULT_WIDTH, StoreSection.DEFAULT_HEIGHT)
         {
             // no code
         }

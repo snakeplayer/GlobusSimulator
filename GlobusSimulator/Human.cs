@@ -9,6 +9,7 @@
  */
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Timers;
 
 namespace GlobusSimulator
@@ -27,33 +28,41 @@ namespace GlobusSimulator
         #endregion
 
         #region Fields
-
         private int _numberOfItems;
-
+        private Timer _timer;
+        private Path _path;
         #endregion
 
         #region Properties
-
         public Rectangle Shape { get; set; }
+
         public Color Color { get; set; }
 
-        public int TimeToStayInMilliseconds { get; set; }
-        public Timer Timer { get; set; }
+        public int TimeToStayInMilliseconds { get; private set; }
 
-        public int NumberOfItemsToBuy {
-            get {
+        private Timer Timer { get => _timer; set => _timer = value ?? throw new ArgumentNullException("Timer", "Timer cannot be null."); }
+
+        public int NumberOfItemsToBuy
+        {
+            get
+            {
                 return TimeToStayInMilliseconds / DEFAULT_DIVIDE_TIME;
             }
         }
 
-        public int NumberOfItems {
-            get {
+        public int NumberOfItems
+        {
+            get
+            {
                 return _numberOfItems;
             }
-            set {
+            private set
+            {
                 _numberOfItems = value < 0 ? 0 : value;
             }
         }
+
+        public Path Path { get => _path; private set => _path = value ?? new Path(); }
         #endregion
 
         #region Constructors
@@ -65,7 +74,7 @@ namespace GlobusSimulator
         // Will be the most used in the project
         public Human(Point pPoint, Color pColor, int pTimeToStayInMilliseconds) : this(pPoint, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT), pColor, pTimeToStayInMilliseconds) { }
 
-        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds) 
+        public Human(int pPositionX, int pPositionY, int pSizeWidth, int pSizeHeight, Color pColor, int pTimeToStayInMilliseconds)
             : this(new Point(pPositionX, pPositionY), new Size(pSizeWidth, pSizeHeight), pColor, pTimeToStayInMilliseconds) { }
 
         public Human(Point pPoint, Size pSize, Color pColor, int pTimeToStayInMilliseconds)
@@ -84,10 +93,16 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
+        public void Move()
+        {
+            this.Timer.Start();
+        }
 
         private void TimeInShop_Elapsed(object sender, ElapsedEventArgs e)
         {
-            // TODO
+            int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
+            Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index++] : this.Path.Points.Last();
+            this.Shape = new Rectangle(nextPoint, this.Shape.Size);
         }
 
         public void StartTimer()
@@ -110,7 +125,6 @@ namespace GlobusSimulator
             }
             return wasRemoved;
         }
-
         #endregion
     }
 }

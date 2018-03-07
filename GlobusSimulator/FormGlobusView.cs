@@ -7,6 +7,7 @@
  * Class : FormGlobusView.cs
  * Class desc. : Reprensents a globus store - main view
  */
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,137 +17,49 @@ namespace GlobusSimulator
     public partial class FormGlobusView : Form
     {
         #region Consts
-
         #endregion
 
         #region Fields
-
         #endregion
 
         #region Properties
-
-        public GlobusShop GlobusShop { get; set; }
-
+        private GlobusShop GlobusShop { get; set; }
         #endregion
 
         #region Constructors
-
         public FormGlobusView()
         {
             InitializeComponent();
-
-            // Points
-            List<Point> points = new List<Point>();
-            points.Add(new Point(90, 80));
-            points.Add(new Point(90, 220));
-            points.Add(new Point(170, 220));
-            points.Add(new Point(170, 80));
-            points.Add(new Point(250, 80));
-            points.Add(new Point(250, 220));
-
-            // Path
-            Path path = new Path(points);
-
-            // GlobusShop
-            this.GlobusShop = new GlobusShop(path);
-
-            // StoreSections
-            this.GlobusShop.StoreSections.Add(new StoreSection(110, 100, 40, 100));
-            this.GlobusShop.StoreSections.Add(new StoreSection(190, 100, 40, 100));
-            this.GlobusShop.StoreSections.Add(new StoreSection(270, 100, 40, 100));
-
-            // Checkouts
-            this.GlobusShop.Checkouts.Add(new Checkout(110, 300, 20, 80));
-            this.GlobusShop.Checkouts.Add(new Checkout(150, 300, 20, 80));
-            this.GlobusShop.Checkouts.Add(new Checkout(190, 300, 20, 80));
+            typeof(Panel).InvokeMember(nameof(DoubleBuffered), System.Reflection.BindingFlags.SetProperty | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, this.pnlGlobusShop, new object[] { true });
         }
-
         #endregion
 
         #region Methods
-
-        public void UpdateView()
-        {
-            // Init
-            this.Refresh();
-            SolidBrush myBrush;
-            Graphics formGraphics = this.CreateGraphics();
-
-            // Humans drawing
-            foreach (Human h in this.GlobusShop.Humans)
-            {
-                myBrush = new SolidBrush(h.Color);
-                formGraphics.FillEllipse(myBrush, h.Shape);
-            }
-
-            // Checkouts drawing
-            foreach (Point p in this.GlobusShop.Path.Points)
-            {
-                myBrush = new SolidBrush(Color.Red);
-                formGraphics.FillEllipse(myBrush, new Rectangle(p, new Size(10, 10)));
-            }
-
-            // StoreSections drawing
-            foreach (StoreSection s in this.GlobusShop.StoreSections)
-            {
-                myBrush = new SolidBrush(s.Color);
-                formGraphics.FillRectangle(myBrush, s.Shape);
-            }
-
-            // Checkouts drawing
-            foreach (Checkout c in this.GlobusShop.Checkouts)
-            {
-                myBrush = new SolidBrush(c.Color);
-                formGraphics.FillRectangle(myBrush, c.Shape);
-            }
-
-            // Dispose
-            formGraphics.Dispose();
-        }
-
-        #endregion
-
         private void BtnStartStop_Click(object sender, System.EventArgs e)
         {
-            // Add Humans
-            this.GlobusShop.Humans.Add(new Human(this.GlobusShop.Path.Points[0], Color.Green, 1000));
-            this.UpdateView();
-        }
-
-        private void button3_Click(object sender, System.EventArgs e)
-        {
-            // Move Humans
-            int index = -1;
-            foreach (Human h in this.GlobusShop.Humans)
-            {
-                for (int i = 0; i < this.GlobusShop.Path.Points.Count; i++)
-                {
-                    if (h.Shape.Location == this.GlobusShop.Path.Points[i])
-                    {
-                        index = i;
-                    }
-                }
-
-                // If the Human is not at the end of the Path
-                if (index < this.GlobusShop.Path.Points.Count - 1)
-                {
-                    h.Shape = new Rectangle(this.GlobusShop.Path.Points[index + 1], h.Shape.Size);
-                }
-                else // If the Human is at the end of the Path, move it to a Checkout
-                {
-                    // TODO
-                }
-            }
-
-            this.UpdateView();
+            this.GlobusShop.Simulate((int)this.nudNbOfSlowHumans.Value, (int)this.nudNbOfMediumHumans.Value, (int)this.nudNbOfFastHumans.Value);
         }
 
         private void BtnOpenEditor_Click(object sender, System.EventArgs e)
         {
             FormGlobusEditor editor = new FormGlobusEditor();
-            if(editor.ShowDialog() == DialogResult.OK)
+            if (editor.ShowDialog() == DialogResult.OK)
             {
+                //this.GlobusShop = new GlobusShop(editor.GlobusEditor);
             }
+        }
+        #endregion
+
+        private void PnlGlobusShop_Paint(object sender, PaintEventArgs e)
+        {
+            this.GlobusShop.StoreSections.ForEach(ss => { e.Graphics.DrawRectangle(new Pen(ss.Color), ss.Shape); e.Graphics.FillRectangle(new SolidBrush(ss.Color), ss.Shape); });
+            this.GlobusShop.Checkouts.FindAll(c => c.IsOpened).ForEach(c => { e.Graphics.DrawRectangle(new Pen(c.Color), c.Shape); e.Graphics.FillRectangle(new SolidBrush(c.Color), c.Shape); });
+            this.GlobusShop.Humans.ForEach(h => { e.Graphics.DrawRectangle(new Pen(h.Color), h.Shape); e.Graphics.FillRectangle(new SolidBrush(h.Color), h.Shape); });
+        }
+
+        public void Notify()
+        {
+            this.pnlGlobusShop.Invalidate();
         }
     }
 }

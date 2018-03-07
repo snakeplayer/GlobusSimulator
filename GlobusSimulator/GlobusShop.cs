@@ -7,64 +7,48 @@
  * Class : GlobusShop.cs
  * Class desc. : Reprensents a Globus shop
  */
-
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace GlobusSimulator
 {
-    public class GlobusShop
+    public class GlobusShop : Shop
     {
         #region Consts
-        private static readonly Path DEFAULT_PATH = new Path();
-        private static readonly List<StoreSection> DEFAULT_STORE_SECTIONS = new List<StoreSection>();
-        private static readonly List<Checkout> DEFAULT_CHECKOUTS = new List<Checkout>();
-        private static readonly List<Human> DEFAULT_HUMANS = new List<Human>();
+        private const int DEFAULT_TIMER_INTERVAL = 15; // 60 FPS - PC MASTER RACE
         #endregion
 
         #region Fields
         private List<Human> _humans;
-        private List<StoreSection> _storeSections;
-        private List<Checkout> _checkouts;
-        private Path _path;
+        private System.Timers.Timer _timer;
+        private FormGlobusView _view;
         #endregion
 
         #region Properties
         public List<Human> Humans { get => _humans; private set => _humans = value ?? new List<Human>(); }
-        public List<StoreSection> StoreSections { get => _storeSections; private set => _storeSections = value ?? new List<StoreSection>(); }
-        public List<Checkout> Checkouts { get => _checkouts; private set => _checkouts = value ?? new List<Checkout>(); }
-        public Path Path { get => _path; private set => _path = value ?? new Path(); }
+        private System.Timers.Timer Timer { get => _timer; set => _timer = value ?? new System.Timers.Timer(GlobusShop.DEFAULT_TIMER_INTERVAL); }
+        private FormGlobusView Observer { get => _view; set => _view = value ?? throw new ArgumentNullException("Observer", "Observer cannot be null."); }
         #endregion
 
         #region Constructors
-        public GlobusShop(Path path, List<StoreSection> storeSections, List<Checkout> checkouts, List<Human> humans)
+        public GlobusShop(List<StoreSection> storeSections, List<Checkout> checkouts, Path path, FormGlobusView observer, List<Human> humans) : base(storeSections, checkouts, path)
         {
-            this.Path = path;
-            this.StoreSections = storeSections;
-            this.Checkouts = checkouts;
             this.Humans = humans;
+            this.Observer = observer;
+            this.Timer = new System.Timers.Timer(GlobusShop.DEFAULT_TIMER_INTERVAL);
+            this.Timer.Elapsed += Timer_Elapsed;
         }
 
-        public GlobusShop(Path path, List<StoreSection> storeSections, List<Checkout> checkouts) : this(path, storeSections, checkouts, new List<Human>())
+        //public GlobusShop(GlobusEditor editor) : this(editor.)
+        //{
+        //    // no code
+        //}
+
+        public GlobusShop(FormGlobusView observer) : this(new List<StoreSection>(), new List<Checkout>(), new Path(), observer, new List<Human>())
         {
             // no code
         }
-
-        public GlobusShop(Path path, List<StoreSection> storeSections) : this(path, storeSections, new List<Checkout>())
-        {
-            // no code
-        }
-
-        public GlobusShop(Path path) : this(path, new List<StoreSection>())
-        {
-            // no code
-        }
-
-        public GlobusShop() : this(new Path())
-        {
-            // no code
-        }
-
         #endregion
 
         #region Methods
@@ -89,49 +73,14 @@ namespace GlobusSimulator
             }
         }
 
-        public void AddCheckout(Checkout checkout)
+        public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans)
         {
-            this.Checkouts.Add(checkout);
+
         }
 
-        public void AddHuman(Human human)
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            this.Humans.Add(human);
-        }
-
-        public void AddStoreSection(StoreSection storeSection)
-        {
-            this.StoreSections.Add(storeSection);
-        }
-
-        public void AddStoreSection(Point location)
-        {
-            this.AddStoreSection(new StoreSection(location));
-        }
-
-        public void RemoveStoreSection(StoreSection storeSection)
-        {
-            this.StoreSections.Remove(storeSection);
-        }
-
-        public void RemoveStoreSections(List<StoreSection> storeSections)
-        {
-            storeSections.ForEach(ss => this.StoreSections.Remove(ss));
-        }
-
-        public void RemoveAllStoreSections()
-        {
-            this.StoreSections.Clear();
-        }
-
-        public void AddPointToPath(Point point)
-        {
-            this.Path.AddPoint(point);
-        }
-
-        public void ResetPath()
-        {
-            this.Path.RemoveAllPoints();
+            this.Observer.Notify();
         }
         #endregion
     }
