@@ -70,8 +70,7 @@ namespace GlobusSimulator
             // Init
             this.Refresh();
             SolidBrush myBrush;
-            Graphics formGraphics;
-            formGraphics = this.CreateGraphics();
+            Graphics formGraphics = this.CreateGraphics();
 
             // Humans drawing
             foreach (Human h in this.GlobusShop.Humans)
@@ -107,15 +106,10 @@ namespace GlobusSimulator
 
         #endregion
 
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-            this.UpdateView();
-        }
-
-        private void button2_Click(object sender, System.EventArgs e)
+        private void BtnStartStop_Click(object sender, System.EventArgs e)
         {
             // Add Humans
-            this.GlobusShop.Humans.Add(new Human(this.GlobusShop.Path.Points[0], Color.Green, 1000, this.GlobusShop));
+            this.GlobusShop.Humans.Add(new Human(this.GlobusShop.Path.Points[0], Color.Green, 1000));
             this.UpdateView();
         }
 
@@ -147,10 +141,13 @@ namespace GlobusSimulator
             this.UpdateView();
         }
 
-        private void button4_Click(object sender, System.EventArgs e)
+        private void BtnOpenEditor_Click(object sender, System.EventArgs e)
         {
-            FormGlobusEditor frm = new FormGlobusEditor();
-            frm.Show();
+            FormGlobusEditor editor = new FormGlobusEditor();
+            if(editor.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
     }
 }

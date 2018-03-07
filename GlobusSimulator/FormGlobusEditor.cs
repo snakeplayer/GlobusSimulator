@@ -8,13 +8,8 @@
  * Class desc. : Allows to create a custom GlobusStore - view
  */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace GlobusSimulator
@@ -26,13 +21,12 @@ namespace GlobusSimulator
         #endregion
 
         #region Fields
-
+        private GlobusShop _globusShop;
         #endregion
 
         #region Properties
-
-        public GlobusShop GlobusShop { get; set; }
-
+        private GlobusShop GlobusShop { get => _globusShop; set => _globusShop = value ?? new GlobusShop(); }
+        private bool IsDrawingPath { get; set; }
         #endregion
 
         #region Constructors
@@ -40,9 +34,9 @@ namespace GlobusSimulator
         public FormGlobusEditor()
         {
             InitializeComponent();
-
-            Path path = new Path();
-            this.GlobusShop = new GlobusShop(path);
+            typeof(Panel).InvokeMember(nameof(DoubleBuffered), BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, pnlDrawingZone, new object[] { true });
+            this.cbxObjectToDraw.DataSource = Enum.GetValues(typeof(DrawableObject));
+            this.GlobusShop = new GlobusShop();
         }
 
         #endregion
@@ -52,88 +46,50 @@ namespace GlobusSimulator
         public void UpdateView()
         {
             // Init
-            this.Refresh();
-            SolidBrush myBrush;
-            Graphics formGraphics;
-            formGraphics = pnlDrawingZone.CreateGraphics();
-
-            // Humans drawing
-            foreach (Human h in this.GlobusShop.Humans)
-            {
-                myBrush = new SolidBrush(h.Color);
-                formGraphics.FillEllipse(myBrush, h.Shape);
-            }
-
-            // Checkouts drawing
-            foreach (Point p in this.GlobusShop.Path.Points)
-            {
-                myBrush = new SolidBrush(Color.Red);
-                formGraphics.FillEllipse(myBrush, new Rectangle(p, new Size(10, 10)));
-            }
-
-            // StoreSections drawing
-            foreach (StoreSection s in this.GlobusShop.StoreSections)
-            {
-                myBrush = new SolidBrush(s.Color);
-                formGraphics.FillRectangle(myBrush, s.Shape);
-            }
-
-            // Checkouts drawing
-            foreach (Checkout c in this.GlobusShop.Checkouts)
-            {
-                myBrush = new SolidBrush(c.Color);
-                formGraphics.FillRectangle(myBrush, c.Shape);
-            }
-
-            // Dispose
-            formGraphics.Dispose();
-        }
-
-        private void pnlDrawingZone_Click(object sender, EventArgs e)
-        {
-            switch (cbxObjectToDraw.Text)
-            {
-                case "Path":
-                    this.DrawPath();
-                    break;
-
-                case "Store section":
-                    this.DrawStoreSection();
-                    break;
-
-                case "Checkout":
-                    this.DrawCheckout();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        public void DrawPath()
-        {
-            Point mousePosition = pnlDrawingZone.PointToClient(Cursor.Position);
-            this.GlobusShop.Path.AddPoint(new Point(mousePosition.X, mousePosition.Y));
-
-            this.UpdateView();
-        }
-
-        public void DrawStoreSection()
-        {
-            Point mousePosition = pnlDrawingZone.PointToClient(Cursor.Position);
-            this.GlobusShop.StoreSections.Add(new StoreSection(mousePosition, new Size(40, 100)));
-
-            this.UpdateView();
-        }
-
-        public void DrawCheckout()
-        {
-            Point mousePosition = pnlDrawingZone.PointToClient(Cursor.Position);
-            this.GlobusShop.Checkouts.Add(new Checkout(mousePosition.X, mousePosition.Y, 20, 60));
-
-            this.UpdateView();
+            this.pnlDrawingZone.Invalidate();
         }
 
         #endregion
+
+        private void PnlDrawingZone_MouseClick(object sender, MouseEventArgs e)
+        {
+            switch ((DrawableObject)cbxObjectToDraw.SelectedItem)
+            {
+                case DrawableObject.Path:
+                    this.IsDrawingPath = !this.IsDrawingPath && e.Button == MouseButtons.Right;
+                    this.GlobusShop.AddPointToPath(e.Location);
+                    break;
+                case DrawableObject.StoreSection:
+                    this.GlobusShop.AddStoreSection(e.Location);
+                    break;
+                case DrawableObject.Checkout:
+                   // this.GlobusShop.AddCheckout(new Checkout());
+                    break;
+            }
+        }
+
+        private void PnlDrawingZone_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.IsDrawingPath)
+            {
+                this.GlobusShop.AddPointToPath(e.Location);
+                this.UpdateView();
+            }
+        }
+
+        private void PnlDrawingZone_Paint(object sender, PaintEventArgs e)
+        {
+            SolidBrush myBrush;
+
+            this.GlobusShop.Humans.ForEach(h => { myBrush = new SolidBrush(h.Color); e.Graphics.FillEllipse(myBrush, h.Shape); });
+            this.GlobusShop.Path.Points.ForEach(p => { myBrush = new SolidBrush(Color.Red); e.Graphics.FillEllipse(myBrush, new Rectangle(p, new Size(10, 10))); });
+            this.GlobusShop.StoreSections.ForEach(s => { myBrush = new SolidBrush(s.Color); e.Graphics.FillRectangle(myBrush, s.Shape); });
+            this.GlobusShop.Checkouts.ForEach(c => { myBrush = new SolidBrush(c.Color); e.Graphics.FillRectangle(myBrush, c.Shape); });
+        }
+
+        private void PnlDrawingZone_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
