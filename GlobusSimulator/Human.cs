@@ -32,6 +32,7 @@ namespace GlobusSimulator
         private Timer Timer { get => _timer; set => _timer = value ?? throw new ArgumentNullException("Timer", "Timer cannot be null."); }
         public HumanType Type { get => _type; set => _type = value ?? MediumHumanType.CreateInstance(); }
         public Path Path { get => _path; private set => _path = value ?? new Path(); }
+        public bool IsArrived { get => this.Shape.Location == this.Path.End; }
         #endregion
 
         #region Constructors
@@ -44,13 +45,6 @@ namespace GlobusSimulator
             this.Timer.Elapsed += Timer_Elapsed;
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
-            Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index++] : this.Path.Points.Last();
-            this.Shape = new Rectangle(nextPoint, this.Shape.Size);
-        }
-
         public Human(Point location, HumanType humanType, Path path) : this(location, new Size(Human.DEFAULT_WIDTH, Human.DEFAULT_HEIGHT), humanType, path)
         {
             // no code
@@ -58,6 +52,14 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
+            Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index++] : this.Path.End;
+            this.Shape = new Rectangle(nextPoint, this.Shape.Size);
+        }
+
         public void Move()
         {
             this.Timer.Start();

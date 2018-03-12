@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GlobusSimulator
 {
@@ -55,25 +56,37 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
-        public void PlaceHumanFromPathToCheckout(Human human)
+        public async void PlaceHumansToCheckout()
         {
-            if (this.Humans.Contains(human))
+            await Task.Run(() =>
             {
-                this.Humans.Remove(human);
-                bool isAllCheckoutsFull = true;
-                foreach (Checkout c in this.Checkouts)
+                while (this.Timer.Enabled)
                 {
-                    if (c.NumberOfHumans < c.MaxNumberOfHumans)
-                    {
-                        c.AddHuman(human);
-                        isAllCheckoutsFull = false;
-                    }
+                    this.Humans.ForEach(h => { if (h.IsArrived) this.PlaceHumanToCheckout(h); });
                 }
-                if (isAllCheckoutsFull)
-                {
-                    //
-                }
-            }
+            }).ConfigureAwait(false);
+        }
+
+        public void PlaceHumanToCheckout(Human human)
+        {
+            // if (this.Humans.Contains(human))
+            //{
+            //    this.Humans.Remove(human);
+            //    bool isAllCheckoutsFull = true;
+            //    bool isHumanPlaced = false;
+            //    this.Checkouts.ForEach(c =>
+            //    {
+            //        if (c.IsOpened && isHumanPlaced && c.NumberOfHumans < c.MaxNumberOfHumans)
+            //        {
+            //            c.AddHuman(human);
+            //            isHumanPlaced = true;
+            //            isAllCheckoutsFull = false;
+            //        }
+            //    });
+            //    if (isAllCheckoutsFull)
+            //    {
+            //    }
+            //}
         }
 
         public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans)
@@ -81,12 +94,27 @@ namespace GlobusSimulator
             this.AddHumans(numberOfSlowHumans, SlowHumanType.CreateInstance());
             this.AddHumans(numberOfMediumHumans, MediumHumanType.CreateInstance());
             this.AddHumans(numberOfFastHumans, FastHumanType.CreateInstance());
-            this.Humans.ForEach(h => h.Move());
             this.Timer.Start();
+            this.MoveHumans(typeof(FastHumanType));
+            this.MoveHumans(typeof(MediumHumanType));
+            this.MoveHumans(typeof(SlowHumanType));
+            this.PlaceHumansToCheckout();
+        }
+
+        private async void MoveHumans(Type humanType)
+        {
+            await Task.Run(() => this.Humans.ForEach(h =>
+            {
+                if (h.Type.GetType() == humanType)
+                {
+                    h.Move(); Thread.Sleep(1000);
+                }
+            })).ConfigureAwait(false);
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+
             this.Observer.Notify();
         }
 
@@ -94,7 +122,7 @@ namespace GlobusSimulator
         {
             for (int i = 0; i < number; i++)
             {
-                this.Humans.Add(new Human(this.Path.Points[0], humanType, this.Path));
+                this.Humans.Add(new Human(this.Path.Start, humanType, this.Path));
             }
         }
         #endregion

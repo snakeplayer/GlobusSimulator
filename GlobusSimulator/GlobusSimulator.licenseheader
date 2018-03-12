@@ -1,0 +1,14 @@
+﻿extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+/*
+ * Authors : Baptiste COUDRAY, Benoit CHAUCHE
+ * Enterprise : CFPT-I, Geneva
+ * Date : %CreationDay%.%CreationMonth%.%CreationYear%
+ * Project : %Project%
+ * Project desc. : A simulated Globus shop
+ * Class : %FileName%
+ * Class desc. :
+ */
+extensions: .aspx .ascx
+extensions: .vb
+extensions:  .xml .config .xsd

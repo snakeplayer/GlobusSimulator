@@ -9,6 +9,7 @@
  */
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace GlobusSimulator
 {
@@ -25,6 +26,8 @@ namespace GlobusSimulator
         #region Properties
         public List<Point> Points { get => _points; private set => _points = value ?? new List<Point>(); }
         public int NumberOfPoints { get => this.Points.Count; }
+        public Point Start { get => this.NumberOfPoints > 0 ? this.Points[0] : Point.Empty; }
+        public Point End { get => this.NumberOfPoints > 0 ? this.Points.Last() : Point.Empty; }
         #endregion
 
         #region Constructors

@@ -34,7 +34,6 @@
             this.pnlGlobusShop = new System.Windows.Forms.Panel();
             this.nudNbOfSlowHumans = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkAutoAddHumans = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.nudNbOfFastHumans = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -111,7 +110,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.chkAutoAddHumans);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.nudNbOfFastHumans);
             this.groupBox1.Controls.Add(this.label2);
@@ -126,16 +124,6 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tools";
-            // 
-            // chkAutoAddHumans
-            // 
-            this.chkAutoAddHumans.AutoSize = true;
-            this.chkAutoAddHumans.Location = new System.Drawing.Point(504, 52);
-            this.chkAutoAddHumans.Name = "chkAutoAddHumans";
-            this.chkAutoAddHumans.Size = new System.Drawing.Size(112, 17);
-            this.chkAutoAddHumans.TabIndex = 8;
-            this.chkAutoAddHumans.Text = "Auto Add Humans";
-            this.chkAutoAddHumans.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -240,7 +228,6 @@
         private System.Windows.Forms.NumericUpDown nudNbOfSlowHumans;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox chkAutoAddHumans;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudNbOfFastHumans;
         private System.Windows.Forms.Label label2;

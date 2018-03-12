@@ -163,7 +163,6 @@ namespace GlobusSimulator
                     default:
                         break;
                 }
-                
             }
         }
 

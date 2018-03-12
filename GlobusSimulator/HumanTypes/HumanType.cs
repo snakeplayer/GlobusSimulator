@@ -1,4 +1,13 @@
-﻿using System.Drawing;
+﻿/*
+ * Authors : Baptiste COUDRAY, Benoit CHAUCHE
+ * Enterprise : CFPT-I, Geneva
+ * Date : 12.3.2018
+ * Project : GlobusSimulator
+ * Project desc. : A simulated Globus shop
+ * Class : HumanType.cs
+ * Class desc. :
+ */
+using System.Drawing;
 
 namespace GlobusSimulator
 {
