@@ -7,8 +7,6 @@
  * Class : FormGlobusView.cs
  * Class desc. : Reprensents a globus store - main view
  */
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -31,6 +29,7 @@ namespace GlobusSimulator
         {
             InitializeComponent();
             typeof(Panel).InvokeMember(nameof(DoubleBuffered), System.Reflection.BindingFlags.SetProperty | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, this.pnlGlobusShop, new object[] { true });
+            this.GlobusShop = new GlobusShop(this);
         }
         #endregion
 
@@ -45,7 +44,8 @@ namespace GlobusSimulator
             FormGlobusEditor editor = new FormGlobusEditor();
             if (editor.ShowDialog() == DialogResult.OK)
             {
-                //this.GlobusShop = new GlobusShop(editor.GlobusEditor);
+                this.GlobusShop = new GlobusShop(editor.GlobusShopEditor, this);
+                this.btnStartStop.Enabled = true;
             }
         }
         #endregion
@@ -53,8 +53,8 @@ namespace GlobusSimulator
         private void PnlGlobusShop_Paint(object sender, PaintEventArgs e)
         {
             this.GlobusShop.StoreSections.ForEach(ss => { e.Graphics.DrawRectangle(new Pen(ss.Color), ss.Shape); e.Graphics.FillRectangle(new SolidBrush(ss.Color), ss.Shape); });
-            this.GlobusShop.Checkouts.FindAll(c => c.IsOpened).ForEach(c => { e.Graphics.DrawRectangle(new Pen(c.Color), c.Shape); e.Graphics.FillRectangle(new SolidBrush(c.Color), c.Shape); });
-            this.GlobusShop.Humans.ForEach(h => { e.Graphics.DrawRectangle(new Pen(h.Color), h.Shape); e.Graphics.FillRectangle(new SolidBrush(h.Color), h.Shape); });
+            this.GlobusShop.Checkouts.ForEach(c => { e.Graphics.DrawRectangle(new Pen(c.Color), c.Shape); e.Graphics.FillRectangle(new SolidBrush(c.Color), c.Shape); });
+            this.GlobusShop.Humans.ForEach(h => { e.Graphics.DrawRectangle(new Pen(h.Type.Color), h.Shape); e.Graphics.FillRectangle(new SolidBrush(h.Type.Color), h.Shape); });
         }
 
         public void Notify()

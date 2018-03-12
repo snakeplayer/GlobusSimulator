@@ -23,13 +23,10 @@ namespace GlobusSimulator
         #endregion
 
         #region Properties
-
         public GlobusShopEditor GlobusShopEditor { get => _globusShopEditor; private set => _globusShopEditor = value ?? new GlobusShopEditor(); }
-
         private bool IsDrawingObject { get; set; }
         private Point ObjectStartPoint { get; set; }
         private bool IsDrawingPath { get; set; }
-
         public Point MouseLocation { get; set; }
 
         #endregion
@@ -50,7 +47,6 @@ namespace GlobusSimulator
 
         public void UpdateView()
         {
-            // Init
             this.pnlDrawingZone.Invalidate();
         }
 
@@ -64,12 +60,10 @@ namespace GlobusSimulator
                 case DrawableObject.StoreSection:
                     this.CreateObject(DrawableObject.StoreSection, e);
                     break;
-
                 // Checkout
                 case DrawableObject.Checkout:
                     this.CreateObject(DrawableObject.Checkout, e);
                     break;
-
                 // Path
                 case DrawableObject.Path:
                     if (e.Button == MouseButtons.Left)
@@ -77,7 +71,7 @@ namespace GlobusSimulator
                         this.IsDrawingPath = !this.IsDrawingPath;
                         if (this.IsDrawingPath)
                         {
-                            this.GlobusShopEditor.ResetPath();
+                            this.GlobusShopEditor.RemovePath();
                         }
                         else
                         {
@@ -86,11 +80,10 @@ namespace GlobusSimulator
                     }
                     else
                     {
-                        this.GlobusShopEditor.ResetPath();
+                        this.GlobusShopEditor.RemovePath();
                     }
                     break;
             }
-
             this.UpdateView();
         }
 
@@ -102,7 +95,6 @@ namespace GlobusSimulator
             {
                 this.GlobusShopEditor.AddPointToPath(this.MouseLocation);
             }
-
             this.UpdateView();
         }
 
@@ -127,7 +119,7 @@ namespace GlobusSimulator
 
         }
 
-        private void pnlDrawingZone_MouseLeave(object sender, EventArgs e)
+        private void PnlDrawingZone_MouseLeave(object sender, EventArgs e)
         {
             this.IsDrawingObject = false;
         }
@@ -173,6 +165,14 @@ namespace GlobusSimulator
                 }
                 
             }
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            this.GlobusShopEditor.RemoveStoreSections();
+            this.GlobusShopEditor.RemoveCheckouts();
+            this.GlobusShopEditor.RemovePath();
+            this.UpdateView();
         }
     }
 }

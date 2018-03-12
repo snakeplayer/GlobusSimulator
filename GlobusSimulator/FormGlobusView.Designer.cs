@@ -59,6 +59,7 @@
             // 
             // btnStartStop
             // 
+            this.btnStartStop.Enabled = false;
             this.btnStartStop.Location = new System.Drawing.Point(423, 23);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(75, 72);

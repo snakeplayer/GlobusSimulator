@@ -10,6 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Threading;
 
 namespace GlobusSimulator
 {
@@ -38,12 +40,13 @@ namespace GlobusSimulator
             this.Observer = observer;
             this.Timer = new System.Timers.Timer(GlobusShop.DEFAULT_TIMER_INTERVAL);
             this.Timer.Elapsed += Timer_Elapsed;
+            this.Observer.Notify();
         }
 
-        //public GlobusShop(GlobusEditor editor) : this(editor.)
-        //{
-        //    // no code
-        //}
+        public GlobusShop(GlobusShopEditor editor, FormGlobusView observer) : this(editor.StoreSections, editor.Checkouts, editor.Path, observer, new List<Human>())
+        {
+            // no code
+        }
 
         public GlobusShop(FormGlobusView observer) : this(new List<StoreSection>(), new List<Checkout>(), new Path(), observer, new List<Human>())
         {
@@ -75,7 +78,11 @@ namespace GlobusSimulator
 
         public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans)
         {
-
+            this.AddHumans(numberOfSlowHumans, SlowHumanType.CreateInstance());
+            this.AddHumans(numberOfMediumHumans, MediumHumanType.CreateInstance());
+            this.AddHumans(numberOfFastHumans, FastHumanType.CreateInstance());
+            this.Humans.ForEach(h => h.Move());
+            this.Timer.Start();
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -83,11 +90,11 @@ namespace GlobusSimulator
             this.Observer.Notify();
         }
 
-        private void AddHumans(int number)
+        private void AddHumans(int number, HumanType humanType)
         {
             for (int i = 0; i < number; i++)
             {
-                this.Humans.Add(new Human());
+                this.Humans.Add(new Human(this.Path.Points[0], humanType, this.Path));
             }
         }
         #endregion

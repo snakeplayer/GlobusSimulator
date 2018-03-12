@@ -11,9 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobusSimulator
 {
@@ -84,7 +81,7 @@ namespace GlobusSimulator
             storeSections.ForEach(ss => this.StoreSections.Remove(ss));
         }
 
-        public void RemoveAllStoreSections()
+        public void RemoveStoreSections()
         {
             this.StoreSections.Clear();
         }
@@ -128,6 +125,16 @@ namespace GlobusSimulator
                 this.Checkouts.RemoveAt(index);
             }
         }
+
+        public void RemoveCheckouts(List<Checkout> checkouts)
+        {
+            checkouts.ForEach(c => this.Checkouts.Remove(c));
+        }
+
+        public void RemoveCheckouts()
+        {
+            this.Checkouts.Clear();
+        }
         #endregion
 
         #region Methods (Path)
@@ -136,12 +143,17 @@ namespace GlobusSimulator
             this.Path.AddPoint(point);
         }
 
+        public void AddPointsToPath(List<Point> points)
+        {
+            this.Path.AddPoints(points);
+        }
+
         public void RemovePointFromPath(Point point)
         {
             this.Path.RemovePoint(point);
         }
 
-        public void ResetPath()
+        public void RemovePath()
         {
             this.Path.RemoveAllPoints();
         }

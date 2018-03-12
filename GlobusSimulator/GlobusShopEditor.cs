@@ -8,11 +8,7 @@
  * Class desc. : Used to create a GlobusShop
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GlobusSimulator
 {

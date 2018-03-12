@@ -30,8 +30,8 @@
         {
             this.gbxTools = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnSaveAndExit = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbxObjectToDraw = new System.Windows.Forms.ComboBox();
             this.gbxDrawingZone = new System.Windows.Forms.GroupBox();
@@ -43,8 +43,8 @@
             // gbxTools
             // 
             this.gbxTools.Controls.Add(this.btnCancel);
-            this.gbxTools.Controls.Add(this.button2);
-            this.gbxTools.Controls.Add(this.button1);
+            this.gbxTools.Controls.Add(this.btnSaveAndExit);
+            this.gbxTools.Controls.Add(this.btnClear);
             this.gbxTools.Controls.Add(this.label1);
             this.gbxTools.Controls.Add(this.cbxObjectToDraw);
             this.gbxTools.Location = new System.Drawing.Point(12, 420);
@@ -56,6 +56,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(452, 19);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -63,24 +64,26 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnSaveAndExit
             // 
-            this.button2.Location = new System.Drawing.Point(533, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(151, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Save & Back to the shop";
-            this.button2.UseMnemonic = false;
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnSaveAndExit.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnSaveAndExit.Location = new System.Drawing.Point(533, 19);
+            this.btnSaveAndExit.Name = "btnSaveAndExit";
+            this.btnSaveAndExit.Size = new System.Drawing.Size(151, 23);
+            this.btnSaveAndExit.TabIndex = 3;
+            this.btnSaveAndExit.Text = "Save & Back to the shop";
+            this.btnSaveAndExit.UseMnemonic = false;
+            this.btnSaveAndExit.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnClear
             // 
-            this.button1.Location = new System.Drawing.Point(218, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Clear";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnClear.Location = new System.Drawing.Point(343, 19);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(103, 23);
+            this.btnClear.TabIndex = 2;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // label1
             // 
@@ -120,7 +123,7 @@
             this.pnlDrawingZone.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlDrawingZone_Paint);
             this.pnlDrawingZone.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseClick);
             this.pnlDrawingZone.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseDown);
-            this.pnlDrawingZone.MouseLeave += new System.EventHandler(this.pnlDrawingZone_MouseLeave);
+            this.pnlDrawingZone.MouseLeave += new System.EventHandler(this.PnlDrawingZone_MouseLeave);
             this.pnlDrawingZone.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlDrawingZone_MouseMove);
             // 
             // FormGlobusEditor
@@ -131,7 +134,10 @@
             this.Controls.Add(this.gbxDrawingZone);
             this.Controls.Add(this.gbxTools);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormGlobusEditor";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Globus Editor";
             this.gbxTools.ResumeLayout(false);
@@ -147,8 +153,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbxObjectToDraw;
         private System.Windows.Forms.GroupBox gbxDrawingZone;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSaveAndExit;
+        private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Panel pnlDrawingZone;
     }
