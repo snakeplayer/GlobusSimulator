@@ -18,6 +18,8 @@ namespace GlobusSimulator
 {
     public class GlobusShop : Shop
     {
+        private static readonly Random Random = new Random();
+
         #region Consts
         private const int DEFAULT_TIMER_INTERVAL = 15; // 60 FPS - PC MASTER RACE
         #endregion
@@ -32,6 +34,7 @@ namespace GlobusSimulator
         public List<Human> Humans { get => _humans; private set => _humans = value ?? new List<Human>(); }
         private System.Timers.Timer Timer { get => _timer; set => _timer = value ?? new System.Timers.Timer(GlobusShop.DEFAULT_TIMER_INTERVAL); }
         private FormGlobusView Observer { get => _view; set => _view = value ?? throw new ArgumentNullException("Observer", "Observer cannot be null."); }
+        public bool IsSimulationStarted { get => this.Timer.Enabled; }
         #endregion
 
         #region Constructors
@@ -41,7 +44,6 @@ namespace GlobusSimulator
             this.Observer = observer;
             this.Timer = new System.Timers.Timer(GlobusShop.DEFAULT_TIMER_INTERVAL);
             this.Timer.Elapsed += Timer_Elapsed;
-            this.Observer.Notify();
         }
 
         public GlobusShop(GlobusShopEditor editor, FormGlobusView observer) : this(editor.StoreSections, editor.Checkouts, editor.Path, observer, new List<Human>())
@@ -62,34 +64,48 @@ namespace GlobusSimulator
             {
                 while (this.Timer.Enabled)
                 {
-                    this.Humans.ForEach(h => { if (h.IsArrived) this.PlaceHumanToCheckout(h); });
+                    lock (this.Humans)
+                    {
+                        this.Humans.ForEach(h => { if (h.IsArrived) this.PlaceHumanToCheckout(h); });
+                    }
                 }
             }).ConfigureAwait(false);
         }
 
         public void PlaceHumanToCheckout(Human human)
         {
-            // if (this.Humans.Contains(human))
+            //lock (this.Humans)
             //{
-            //    this.Humans.Remove(human);
-            //    bool isAllCheckoutsFull = true;
-            //    bool isHumanPlaced = false;
-            //    this.Checkouts.ForEach(c =>
+            //    List<Human> tmpHumans = this.Humans.Clone();
+
+            //    if (tmpHumans.Contains(human))
             //    {
-            //        if (c.IsOpened && isHumanPlaced && c.NumberOfHumans < c.MaxNumberOfHumans)
+            //        tmpHumans.Remove(human);
+            //        bool isAllCheckoutsFull = true;
+            //        bool isHumanPlaced = false;
+
+            //        this.Checkouts.ForEach(c =>
             //        {
-            //            c.AddHuman(human);
-            //            isHumanPlaced = true;
-            //            isAllCheckoutsFull = false;
+            //            if (c.IsOpened && !isHumanPlaced && !c.IsFull)
+            //            {
+            //                c.AddHuman(human);
+            //                isHumanPlaced = true;
+            //                isAllCheckoutsFull = false;
+            //            }
+            //        });
+
+            //        if (isAllCheckoutsFull)
+            //        {
+
             //        }
-            //    });
-            //    if (isAllCheckoutsFull)
-            //    {
             //    }
+
+            //    this.Humans = tmpHumans.Clone();
+
             //}
         }
 
-        public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans)
+        public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans, bool autoAddHumans, int humansPerMinute)
         {
             this.AddHumans(numberOfSlowHumans, SlowHumanType.CreateInstance());
             this.AddHumans(numberOfMediumHumans, MediumHumanType.CreateInstance());
@@ -99,22 +115,56 @@ namespace GlobusSimulator
             this.MoveHumans(typeof(MediumHumanType));
             this.MoveHumans(typeof(SlowHumanType));
             this.PlaceHumansToCheckout();
+            if (autoAddHumans) this.AddRandomHuman(humansPerMinute);
         }
 
         private async void MoveHumans(Type humanType)
         {
-            await Task.Run(() => this.Humans.ForEach(h =>
+            await Task.Run(() =>
             {
-                if (h.Type.GetType() == humanType)
+                lock (this.Humans)
                 {
-                    h.Move(); Thread.Sleep(1000);
+                    this.Humans.ForEach(h =>
+                      {
+                          if (h.Type.GetType() == humanType)
+                          {
+                              h.Move();
+                              Thread.Sleep(1000); // Sleep one second
+                          }
+                      });
                 }
-            })).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        }
+
+        private async void AddRandomHuman(int humansPerMinute)
+        {
+            HumanType[] humanTypes = new HumanType[] { SlowHumanType.CreateInstance(), MediumHumanType.CreateInstance(), FastHumanType.CreateInstance() };
+
+            await Task.Run(() =>
+            {
+                HumanType humanType = null;
+                while (this.Timer.Enabled)
+                {
+                    humanType = humanTypes[GlobusShop.Random.Next(humanTypes.Length)];
+                    this.AddHuman(humanType);
+                    Thread.Sleep(60 / humansPerMinute * 1000);
+                }
+            }).ConfigureAwait(false);
+        }
+
+        private void AddHuman(HumanType humanType)
+        {
+            lock (this.Humans)
+            {
+                List<Human> tmpHumans = this.Humans.Clone();
+                tmpHumans.Add(new Human(this.Path.Start, humanType, this.Path));
+                tmpHumans.Last().Move();
+                this.Humans = tmpHumans.Clone();
+            }
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
             this.Observer.Notify();
         }
 
@@ -122,7 +172,7 @@ namespace GlobusSimulator
         {
             for (int i = 0; i < number; i++)
             {
-                this.Humans.Add(new Human(this.Path.Start, humanType, this.Path));
+                this.AddHuman(humanType);
             }
         }
         #endregion

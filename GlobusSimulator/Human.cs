@@ -14,11 +14,12 @@ using System.Timers;
 
 namespace GlobusSimulator
 {
-    public class Human : Object
+    public class Human : Object, ICloneable
     {
         #region Consts
         private const int DEFAULT_WIDTH = 15;
         private const int DEFAULT_HEIGHT = 15;
+        private const bool DEFAULT_IS_MOVING = false;
         #endregion
 
         #region Fields
@@ -36,16 +37,17 @@ namespace GlobusSimulator
         #endregion
 
         #region Constructors
-        public Human(Point location, Size size, HumanType humanType, Path path)
+        public Human(Point location, Size size, HumanType humanType, Path path, Timer timer)
         {
             this.Shape = new Rectangle(location, size);
             this.Type = humanType;
             this.Path = path;
-            this.Timer = new Timer(this.Type.Speed);
+            this.Timer = timer ?? new Timer(this.Type.Speed);
             this.Timer.Elapsed += Timer_Elapsed;
+             this.Move();
         }
 
-        public Human(Point location, HumanType humanType, Path path) : this(location, new Size(Human.DEFAULT_WIDTH, Human.DEFAULT_HEIGHT), humanType, path)
+        public Human(Point location, HumanType humanType, Path path) : this(location, new Size(Human.DEFAULT_WIDTH, Human.DEFAULT_HEIGHT), humanType, path, null)
         {
             // no code
         }
@@ -56,7 +58,7 @@ namespace GlobusSimulator
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
-            Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index++] : this.Path.End;
+            Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index] : this.Path.End;
             this.Shape = new Rectangle(nextPoint, this.Shape.Size);
         }
 
@@ -68,6 +70,14 @@ namespace GlobusSimulator
         public void Exit()
         {
             this.Timer.Stop();
+        }
+
+        public object Clone()
+        {
+            return new Human(
+                new Point(this.Shape.X, this.Shape.Y),
+                new Size(this.Shape.Width, this.Shape.Height),
+                this.Type, this.Path, this.Timer);
         }
         #endregion
     }

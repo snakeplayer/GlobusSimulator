@@ -39,16 +39,20 @@
             this.label2 = new System.Windows.Forms.Label();
             this.nudNbOfMediumHumans = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.chkAutoAddHumans = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nudHumansPerMinute = new System.Windows.Forms.NumericUpDown();
             this.gbxDrawingZone.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfSlowHumans)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfFastHumans)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfMediumHumans)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHumansPerMinute)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpenEditor
             // 
-            this.btnOpenEditor.Location = new System.Drawing.Point(90, 23);
+            this.btnOpenEditor.Location = new System.Drawing.Point(20, 23);
             this.btnOpenEditor.Name = "btnOpenEditor";
             this.btnOpenEditor.Size = new System.Drawing.Size(75, 72);
             this.btnOpenEditor.TabIndex = 0;
@@ -59,7 +63,7 @@
             // btnStartStop
             // 
             this.btnStartStop.Enabled = false;
-            this.btnStartStop.Location = new System.Drawing.Point(423, 23);
+            this.btnStartStop.Location = new System.Drawing.Point(609, 23);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(75, 72);
             this.btnStartStop.TabIndex = 7;
@@ -88,7 +92,7 @@
             // 
             // nudNbOfSlowHumans
             // 
-            this.nudNbOfSlowHumans.Location = new System.Drawing.Point(318, 23);
+            this.nudNbOfSlowHumans.Location = new System.Drawing.Point(248, 23);
             this.nudNbOfSlowHumans.Maximum = new decimal(new int[] {
             20,
             0,
@@ -110,6 +114,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.nudHumansPerMinute);
+            this.groupBox1.Controls.Add(this.chkAutoAddHumans);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.nudNbOfFastHumans);
             this.groupBox1.Controls.Add(this.label2);
@@ -128,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(171, 77);
+            this.label3.Location = new System.Drawing.Point(101, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(122, 13);
             this.label3.TabIndex = 5;
@@ -136,7 +143,7 @@
             // 
             // nudNbOfFastHumans
             // 
-            this.nudNbOfFastHumans.Location = new System.Drawing.Point(318, 75);
+            this.nudNbOfFastHumans.Location = new System.Drawing.Point(248, 75);
             this.nudNbOfFastHumans.Maximum = new decimal(new int[] {
             20,
             0,
@@ -159,7 +166,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(171, 51);
+            this.label2.Location = new System.Drawing.Point(101, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(141, 13);
             this.label2.TabIndex = 3;
@@ -167,7 +174,7 @@
             // 
             // nudNbOfMediumHumans
             // 
-            this.nudNbOfMediumHumans.Location = new System.Drawing.Point(318, 49);
+            this.nudNbOfMediumHumans.Location = new System.Drawing.Point(248, 49);
             this.nudNbOfMediumHumans.Maximum = new decimal(new int[] {
             20,
             0,
@@ -190,11 +197,54 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(171, 25);
+            this.label1.Location = new System.Drawing.Point(101, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(126, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Number of slow humans :";
+            // 
+            // chkAutoAddHumans
+            // 
+            this.chkAutoAddHumans.AutoSize = true;
+            this.chkAutoAddHumans.Location = new System.Drawing.Point(363, 47);
+            this.chkAutoAddHumans.Name = "chkAutoAddHumans";
+            this.chkAutoAddHumans.Size = new System.Drawing.Size(112, 17);
+            this.chkAutoAddHumans.TabIndex = 8;
+            this.chkAutoAddHumans.Text = "Auto Add Humans";
+            this.chkAutoAddHumans.UseVisualStyleBackColor = true;
+            this.chkAutoAddHumans.CheckedChanged += new System.EventHandler(this.chkAutoAddHumans_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(360, 77);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Humans / minute :";
+            // 
+            // nudHumansPerMinute
+            // 
+            this.nudHumansPerMinute.Enabled = false;
+            this.nudHumansPerMinute.Location = new System.Drawing.Point(460, 75);
+            this.nudHumansPerMinute.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.nudHumansPerMinute.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudHumansPerMinute.Name = "nudHumansPerMinute";
+            this.nudHumansPerMinute.Size = new System.Drawing.Size(99, 20);
+            this.nudHumansPerMinute.TabIndex = 10;
+            this.nudHumansPerMinute.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             // 
             // FormGlobusView
             // 
@@ -209,12 +259,14 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Globus Simulator";
+            this.Load += new System.EventHandler(this.FormGlobusView_Load);
             this.gbxDrawingZone.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfSlowHumans)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfFastHumans)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbOfMediumHumans)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHumansPerMinute)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -232,6 +284,9 @@
         private System.Windows.Forms.NumericUpDown nudNbOfFastHumans;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown nudNbOfMediumHumans;
+        private System.Windows.Forms.CheckBox chkAutoAddHumans;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown nudHumansPerMinute;
     }
 }
 

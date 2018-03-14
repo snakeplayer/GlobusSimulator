@@ -32,6 +32,7 @@ namespace GlobusSimulator
         public int MaxNumberOfHumans { get; private set; }
         public Color Color { get; private set; }
         public bool IsOpened { get; private set; }
+        public bool IsFull { get => this.MaxNumberOfHumans > this.NumberOfHumans ; }
         #endregion
 
         #region Constructors
