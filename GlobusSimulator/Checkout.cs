@@ -5,7 +5,7 @@
  * Project : GlobusSimulator
  * Project desc. : A simulated Globus shop
  * Class : Checkout.cs
- * Class desc. : Reprensents a checkout
+ * Class desc. : Represents a checkout
  */
 using System.Collections.Generic;
 using System.Drawing;
@@ -47,7 +47,7 @@ namespace GlobusSimulator
 
         public Checkout(Point location) : this(location, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT))
         {
-
+            // no code
         }
 
         public Checkout(Point location, Size size) : this(new Rectangle(location, size), Checkout.DEFAULT_COLOR, Checkout.DEFAULT_MAX_NUMBER_OF_HUMANS)
@@ -67,7 +67,7 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
-        public void AddHuman(Human human)
+        public void CashIn(Human human)
         {
             this.QueueLine.Enqueue(human);
         }

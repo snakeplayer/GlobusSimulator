@@ -70,7 +70,7 @@ namespace GlobusSimulator
             this.GlobusShop = new GlobusShop(this);
         }
 
-        private void chkAutoAddHumans_CheckedChanged(object sender, System.EventArgs e)
+        private void ChkAutoAddHumans_CheckedChanged(object sender, System.EventArgs e)
         {
             nudHumansPerMinute.Enabled = chkAutoAddHumans.Checked;
         }

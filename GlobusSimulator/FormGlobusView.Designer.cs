@@ -212,7 +212,7 @@
             this.chkAutoAddHumans.TabIndex = 8;
             this.chkAutoAddHumans.Text = "Auto Add Humans";
             this.chkAutoAddHumans.UseVisualStyleBackColor = true;
-            this.chkAutoAddHumans.CheckedChanged += new System.EventHandler(this.chkAutoAddHumans_CheckedChanged);
+            this.chkAutoAddHumans.CheckedChanged += new System.EventHandler(this.ChkAutoAddHumans_CheckedChanged);
             // 
             // label4
             // 

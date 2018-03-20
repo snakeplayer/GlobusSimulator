@@ -14,12 +14,11 @@ using System.Timers;
 
 namespace GlobusSimulator
 {
-    public class Human : Object, ICloneable
+    public class Human : ICloneable
     {
         #region Consts
         private const int DEFAULT_WIDTH = 15;
         private const int DEFAULT_HEIGHT = 15;
-        private const bool DEFAULT_IS_MOVING = false;
         #endregion
 
         #region Fields

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace GlobusSimulator
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// Point d'entrée principal de l'application.
