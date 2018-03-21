@@ -29,7 +29,6 @@ namespace GlobusSimulator
 
         #region Events
         public event EventHandler ShoppingFinished;
-        public event EventHandler CashOut;
         #endregion
 
         #region Properties
@@ -41,6 +40,14 @@ namespace GlobusSimulator
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Human"/> class.
+        /// </summary>
+        /// <param name="location">The location.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="humanType">Type of the human.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="timer">The timer.</param>
         public Human(Point location, Size size, HumanType humanType, Path path, Timer timer)
         {
             this.Shape = new Rectangle(location, size);
@@ -51,6 +58,12 @@ namespace GlobusSimulator
             this.Move();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Human"/> class.
+        /// </summary>
+        /// <param name="location">The location.</param>
+        /// <param name="humanType">Type of the human.</param>
+        /// <param name="path">The path.</param>
         public Human(Point location, HumanType humanType, Path path) : this(location, new Size(Human.DEFAULT_WIDTH, Human.DEFAULT_HEIGHT), humanType, path, null)
         {
             // no code
@@ -58,6 +71,11 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Handles the Elapsed event of the Timer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
@@ -65,37 +83,50 @@ namespace GlobusSimulator
             this.Shape = new Rectangle(nextPoint, this.Shape.Size);
             if (nextPoint == this.Path.End)
             {
-                this.OnShoppingFinished(this, EventArgs.Empty);
-                this.Timer.Stop();
+                this.OnShoppingFinished(this, EventArgs.Empty); // The human has arrived to the last point of the path so we trigger the event that he has finished his shopping
+                this.Timer.Stop(); // The human stop to move
             }
         }
 
+        /// <summary>
+        /// Moves thê human.
+        /// </summary>
         public void Move()
         {
             this.Timer.Start();
         }
 
+        /// <summary>
+        /// Relocates the human.
+        /// </summary>
+        /// <param name="position">The position.</param>
         public void Relocate(Point position)
         {
             this.Shape = new Rectangle(position, this.Shape.Size);
         }
 
+        /// <summary>
+        /// Called when [shopping finished].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void OnShoppingFinished(object sender, EventArgs e)
+        {
+            this.ShoppingFinished?.Invoke(sender, e);
+        }
+
+        /// <summary>
+        /// Creates an object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// New object that is a copy of this instance.
+        /// </returns>
         public object Clone()
         {
             return new Human(
                 new Point(this.Shape.X, this.Shape.Y),
                 new Size(this.Shape.Width, this.Shape.Height),
                 this.Type, this.Path, this.Timer);
-        }
-
-        protected void OnShoppingFinished(object sender, EventArgs e)
-        {
-            this.ShoppingFinished?.Invoke(sender, e);
-        }
-
-        protected void OnCashOut(object sender, EventArgs e)
-        {
-            this.CashOut?.Invoke(sender, e);
         }
         #endregion
     }

@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Checkout.cs" />
     <Compile Include="DrawableObject.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="FormGlobusEditor.cs">
       <SubType>Form</SubType>
     </Compile>

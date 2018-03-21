@@ -31,11 +31,18 @@ namespace GlobusSimulator
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Path"/> class.
+        /// </summary>
         public Path() : this(new List<Point>())
         {
             // no code
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Path"/> class.
+        /// </summary>
+        /// <param name="points">The points.</param>
         public Path(List<Point> points)
         {
             this.Points = new List<Point>(points);
@@ -43,26 +50,45 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Adds the point.
+        /// </summary>
+        /// <param name="point">The point.</param>
         public void AddPoint(Point point)
         {
             this.Points.Add(point);
         }
 
+        /// <summary>
+        /// Adds the points.
+        /// </summary>
+        /// <param name="points">The points.</param>
         public void AddPoints(List<Point> points)
         {
             this.Points.AddRange(points);
         }
 
+        /// <summary>
+        /// Removes the point.
+        /// </summary>
+        /// <param name="point">The point.</param>
         public void RemovePoint(Point point)
         {
             this.Points.Remove(point);
         }
 
+        /// <summary>
+        /// Removes the points.
+        /// </summary>
+        /// <param name="points">The points.</param>
         public void RemovePoints(List<Point> points)
         {
             points.ForEach(p => this.Points.Remove(p));
         }
 
+        /// <summary>
+        /// Removes all points.
+        /// </summary>
         public void RemoveAllPoints()
         {
             this.Points.Clear();
