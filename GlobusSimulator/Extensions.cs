@@ -15,9 +15,9 @@ namespace GlobusSimulator
 {
     public static class Extensions
     {
-        public static List<T> Clone<T>(this List<T> listToClone) where T : ICloneable
+        public static List<T> Clone<T>(this List<T> list) where T : ICloneable
         {
-            return listToClone.Select(item => (T)item.Clone()).ToList();
+            return list.Select(item => (T)item.Clone()).ToList();
         }
     }
 }

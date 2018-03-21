@@ -27,6 +27,11 @@ namespace GlobusSimulator
         private Path _path;
         #endregion
 
+        #region Events
+        public event EventHandler ShoppingFinished;
+        public event EventHandler CashOut;
+        #endregion
+
         #region Properties
         public Rectangle Shape { get; set; }
         private Timer Timer { get => _timer; set => _timer = value ?? throw new ArgumentNullException("Timer", "Timer cannot be null."); }
@@ -43,7 +48,7 @@ namespace GlobusSimulator
             this.Path = path;
             this.Timer = timer ?? new Timer(this.Type.Speed);
             this.Timer.Elapsed += Timer_Elapsed;
-             this.Move();
+            this.Move();
         }
 
         public Human(Point location, HumanType humanType, Path path) : this(location, new Size(Human.DEFAULT_WIDTH, Human.DEFAULT_HEIGHT), humanType, path, null)
@@ -53,12 +58,16 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
-
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             int index = this.Path.Points.FindIndex(p => p == this.Shape.Location);
             Point nextPoint = ++index < this.Path.NumberOfPoints ? this.Path.Points[index] : this.Path.End;
             this.Shape = new Rectangle(nextPoint, this.Shape.Size);
+            if (nextPoint == this.Path.End)
+            {
+                this.OnShoppingFinished(this, EventArgs.Empty);
+                this.Timer.Stop();
+            }
         }
 
         public void Move()
@@ -66,9 +75,9 @@ namespace GlobusSimulator
             this.Timer.Start();
         }
 
-        public void Exit()
+        public void Relocate(Point position)
         {
-            this.Timer.Stop();
+            this.Shape = new Rectangle(position, this.Shape.Size);
         }
 
         public object Clone()
@@ -77,6 +86,16 @@ namespace GlobusSimulator
                 new Point(this.Shape.X, this.Shape.Y),
                 new Size(this.Shape.Width, this.Shape.Height),
                 this.Type, this.Path, this.Timer);
+        }
+
+        protected void OnShoppingFinished(object sender, EventArgs e)
+        {
+            this.ShoppingFinished?.Invoke(this, e);
+        }
+
+        protected void OnCashOut(object sender, EventArgs e)
+        {
+            this.CashOut?.Invoke(this, e);
         }
         #endregion
     }

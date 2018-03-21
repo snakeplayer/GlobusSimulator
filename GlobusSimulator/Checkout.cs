@@ -9,6 +9,8 @@
  */
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GlobusSimulator
 {
@@ -32,7 +34,7 @@ namespace GlobusSimulator
         public int MaxNumberOfHumans { get; private set; }
         public Color Color { get; private set; }
         public bool IsOpened { get; private set; }
-        public bool IsFull { get => this.MaxNumberOfHumans > this.NumberOfHumans ; }
+        public bool IsFull { get => this.NumberOfHumans >= this.MaxNumberOfHumans; }
         #endregion
 
         #region Constructors
@@ -43,6 +45,7 @@ namespace GlobusSimulator
             this.QueueLine = new Queue<Human>(this.MaxNumberOfHumans);
             this.Color = color;
             this.IsOpened = false;
+            this.CashIn();
         }
 
         public Checkout(Point location) : this(location, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT))
@@ -70,6 +73,21 @@ namespace GlobusSimulator
         public void CashIn(Human human)
         {
             this.QueueLine.Enqueue(human);
+            human.Relocate(this.Shape.Location);
+        }
+
+        private async void CashIn()
+        {
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (this.NumberOfHumans > 0)
+                    {
+                        Thread.Sleep(this.QueueLine.Peek().Type.Speed * 100);
+                    }
+                }
+            }).ConfigureAwait(false);
         }
 
         public Human CashOut()
@@ -79,12 +97,12 @@ namespace GlobusSimulator
 
         public void Open()
         {
-            this.IsOpened = false;
+            this.IsOpened = true;
         }
 
         public void Close()
         {
-            this.IsOpened = true;
+            this.IsOpened = false;
         }
         #endregion
     }

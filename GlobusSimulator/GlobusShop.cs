@@ -58,49 +58,26 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
-        public async void PlaceHumansToCheckout()
+        private void PlaceHumanToCheckout(Human human)
         {
-            await Task.Run(() =>
+            lock (this.Humans)
             {
-                while (this.Timer.Enabled)
+                bool isAllCheckoutsFull = true;
+                bool isHumanPlaced = false;
+                do
                 {
-                    lock (this.Humans)
+                    if (isAllCheckoutsFull) this.Checkouts.Find(c => !c.IsOpened)?.Open();
+                    this.Checkouts.ForEach(c =>
                     {
-                        this.Humans.ForEach(h => { if (h.IsArrived) this.PlaceHumanToCheckout(h); });
-                    }
-                }
-            }).ConfigureAwait(false);
-        }
-
-        public async void PlaceHumanToCheckout(Human human)
-        {
-            await Task.Run(() =>
-            {
-                while (this.IsSimulationStarted)
-                {
-                    lock (this.Humans)
-                    {
-                        List<Human> tmpHumans = this.Humans.Clone();
-
-                        if (tmpHumans.Contains(human))
+                        if (c.IsOpened && !isHumanPlaced && !c.IsFull)
                         {
-                            bool isAllCheckoutsFull = true;
-                            bool isHumanPlaced = false;
-
-                            this.Checkouts.ForEach(c =>
-                            {
-                                if (c.IsOpened && !isHumanPlaced && !c.IsFull)
-                                {
-                                    c.CashIn(human);
-                                    isHumanPlaced = true;
-                                    isAllCheckoutsFull = false;
-                                }
-                            });
-                            if (isAllCheckoutsFull) this.Checkouts.Find(c => !c.IsOpened).Open();
+                            c.CashIn(human);
+                            isHumanPlaced = true;
+                            isAllCheckoutsFull = false;
                         }
-                    }
-                }
-            }).ConfigureAwait(false);
+                    });
+                } while (!isHumanPlaced);
+            }
         }
 
         public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans, bool autoAddHumans, int humansPerMinute)
@@ -112,8 +89,12 @@ namespace GlobusSimulator
             this.MoveHumans(typeof(FastHumanType));
             this.MoveHumans(typeof(MediumHumanType));
             this.MoveHumans(typeof(SlowHumanType));
-            this.PlaceHumansToCheckout();
             if (autoAddHumans) this.AddRandomHuman(humansPerMinute);
+        }
+
+        private void Human_ShoppingFinished(object sender, EventArgs e)
+        {
+            this.PlaceHumanToCheckout(sender as Human);
         }
 
         private async void MoveHumans(Type humanType)
@@ -140,7 +121,7 @@ namespace GlobusSimulator
 
             await Task.Run(() =>
             {
-                while (this.Timer.Enabled)
+                while (this.IsSimulationStarted)
                 {
                     HumanType humanType = humanType = humanTypes[GlobusShop.Random.Next(humanTypes.Length)];
                     this.AddHuman(humanType);
@@ -153,10 +134,9 @@ namespace GlobusSimulator
         {
             lock (this.Humans)
             {
-                List<Human> tmpHumans = this.Humans.Clone();
-                tmpHumans.Add(new Human(this.Path.Start, humanType, this.Path));
-                tmpHumans.Last().Move();
-                this.Humans = tmpHumans.Clone();
+                this.Humans.Add(new Human(this.Path.Start, humanType, this.Path));
+                this.Humans.Last().ShoppingFinished += Human_ShoppingFinished;
+                this.Humans.Last().Move();
             }
         }
 
