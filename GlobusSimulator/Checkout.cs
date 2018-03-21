@@ -7,6 +7,7 @@
  * Class : Checkout.cs
  * Class desc. : Represents a checkout
  */
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -21,6 +22,11 @@ namespace GlobusSimulator
         private const int DEFAULT_HEIGHT = 10;
         private static readonly Color DEFAULT_COLOR = Color.Blue;
         private const int DEFAULT_MAX_NUMBER_OF_HUMANS = 5;
+        #endregion
+
+        #region Events
+        public event EventHandler<HumanEventArgs> HumanEnqueue;
+        public event EventHandler<HumanEventArgs> HumanCashOut;
         #endregion
 
         #region Fields
@@ -45,7 +51,6 @@ namespace GlobusSimulator
             this.QueueLine = new Queue<Human>(this.MaxNumberOfHumans);
             this.Color = color;
             this.IsOpened = false;
-            this.CashIn();
         }
 
         public Checkout(Point location) : this(location, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT))
@@ -70,39 +75,48 @@ namespace GlobusSimulator
         #endregion
 
         #region Methods
-        public void CashIn(Human human)
+        public void Enqueue(Human human)
         {
             this.QueueLine.Enqueue(human);
+            this.OnHumanEnqueue(human, new HumanEventArgs(human));
             human.Relocate(this.Shape.Location);
         }
 
-        private async void CashIn()
+        private async void CashOut()
         {
             await Task.Run(() =>
             {
-                while (true)
+                while (this.IsOpened)
                 {
                     if (this.NumberOfHumans > 0)
                     {
                         Thread.Sleep(this.QueueLine.Peek().Type.Speed * 100);
+                        Human human = this.QueueLine.Dequeue();
+                        this.OnHumanCashOut(this, new HumanEventArgs(human));
                     }
                 }
             }).ConfigureAwait(false);
         }
 
-        public Human CashOut()
-        {
-            return this.QueueLine.Dequeue();
-        }
-
         public void Open()
         {
             this.IsOpened = true;
+            this.CashOut();
         }
 
         public void Close()
         {
             this.IsOpened = false;
+        }
+
+        protected void OnHumanEnqueue(object sender, HumanEventArgs e)
+        {
+            this.HumanEnqueue?.Invoke(sender, e);
+        }
+
+        protected void OnHumanCashOut(object sender, HumanEventArgs e)
+        {
+            this.HumanCashOut?.Invoke(sender, e);
         }
         #endregion
     }

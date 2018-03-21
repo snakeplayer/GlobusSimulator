@@ -71,7 +71,7 @@ namespace GlobusSimulator
                     {
                         if (c.IsOpened && !isHumanPlaced && !c.IsFull)
                         {
-                            c.CashIn(human);
+                            c.Enqueue(human);
                             isHumanPlaced = true;
                             isAllCheckoutsFull = false;
                         }
@@ -82,6 +82,7 @@ namespace GlobusSimulator
 
         public void Simulate(int numberOfSlowHumans, int numberOfMediumHumans, int numberOfFastHumans, bool autoAddHumans, int humansPerMinute)
         {
+            this.Checkouts.ForEach(c => c.HumanCashOut += C_HumanCashOut);
             this.AddHumans(numberOfSlowHumans, SlowHumanType.CreateInstance());
             this.AddHumans(numberOfMediumHumans, MediumHumanType.CreateInstance());
             this.AddHumans(numberOfFastHumans, FastHumanType.CreateInstance());
@@ -90,6 +91,11 @@ namespace GlobusSimulator
             this.MoveHumans(typeof(MediumHumanType));
             this.MoveHumans(typeof(SlowHumanType));
             if (autoAddHumans) this.AddRandomHuman(humansPerMinute);
+        }
+
+        private void C_HumanCashOut(object sender, HumanEventArgs e)
+        {
+            this.Humans.Remove(e.Human);
         }
 
         private void Human_ShoppingFinished(object sender, EventArgs e)

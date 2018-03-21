@@ -90,12 +90,12 @@ namespace GlobusSimulator
 
         protected void OnShoppingFinished(object sender, EventArgs e)
         {
-            this.ShoppingFinished?.Invoke(this, e);
+            this.ShoppingFinished?.Invoke(sender, e);
         }
 
         protected void OnCashOut(object sender, EventArgs e)
         {
-            this.CashOut?.Invoke(this, e);
+            this.CashOut?.Invoke(sender, e);
         }
         #endregion
     }

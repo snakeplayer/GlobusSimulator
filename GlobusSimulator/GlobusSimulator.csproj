@@ -63,6 +63,7 @@
     <Compile Include="GlobusShop.cs" />
     <Compile Include="GlobusShopEditor.cs" />
     <Compile Include="Human.cs" />
+    <Compile Include="HumanEventArgs.cs" />
     <Compile Include="HumanTypes\FastHumanType.cs" />
     <Compile Include="HumanTypes\HumanType.cs" />
     <Compile Include="HumanTypes\MediumHumanType.cs" />
